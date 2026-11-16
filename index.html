@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carnet de stage — Sage-femme</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e5659e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Carnet SF">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fdf4f8;--surface:#ffffff;--surface2:#fff8fb;--border:#f2d6e3;--text:#3d2f37;--muted:#8f7683;
+  --accent:#e5659e;--accent2:#f08db8;--deep:#d0488a;--soft:#fde3ee;--shadow:0 6px 24px rgba(214,102,152,.10);
+  --r:18px;--r2:12px;--paper:#fffdfe;--rule:#f4dbe7;--h1:#c8437f;--ok:#4f9d74;--warn:#c9772f;
+  --serif:"Lora",Georgia,"Times New Roman",serif;--disp:"Fraunces",Georgia,serif;
+  color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1419;--surface:#291b23;--surface2:#33222c;--border:#4a3140;--text:#f6e9f0;--muted:#c4a2b4;--accent:#f08db8;--accent2:#e5659e;--deep:#f2a5c6;--soft:#47293a;--shadow:0 6px 24px rgba(0,0,0,.35);--paper:#2c1e26;--rule:#4a3140;--h1:#f08db8;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d1419;--surface:#291b23;--surface2:#33222c;--border:#4a3140;--text:#f6e9f0;--muted:#c4a2b4;--accent:#f08db8;--accent2:#e5659e;--deep:#f2a5c6;--soft:#47293a;--shadow:0 6px 24px rgba(0,0,0,.35);--paper:#2c1e26;--rule:#4a3140;--h1:#f08db8;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit;color:inherit}
+a{color:var(--accent)}
+::selection{background:var(--soft);color:var(--deep)}
+.app{display:grid;grid-template-columns:258px minmax(0,1fr);min-height:100dvh}
+/* ---------- sidebar ---------- */
+.side{position:sticky;top:0;height:100dvh;padding:26px 16px 18px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;gap:18px;overflow-y:auto;z-index:30}
+.brand{display:flex;align-items:baseline;gap:8px;padding:0 8px;flex-wrap:wrap}
+.brand b{font-family:var(--disp);font-size:21px;font-weight:800;letter-spacing:-.3px;line-height:1.1}
+.brand b i{font-style:italic;font-weight:400;color:var(--accent)}
+.brand small{display:block;width:100%;font-size:10px;letter-spacing:3px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.searchbox{position:relative}
+.searchbox input{width:100%;height:38px;border:1px solid var(--border);background:var(--surface2);border-radius:11px;padding:0 34px 0 32px;outline:none;font-size:13.5px}
+.searchbox input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
+.searchbox svg{position:absolute;left:10px;top:11px;width:16px;height:16px;color:var(--muted)}
+.searchbox kbd{position:absolute;right:8px;top:9px;font-family:var(--serif);font-size:10.5px;color:var(--muted);border:1px solid var(--border);border-radius:5px;padding:1px 5px;background:var(--surface)}
+nav{display:grid;gap:2px;min-width:0}
+.side>*{min-width:0}
+.flist{min-width:0}
+.cr2{border:0;background:none;color:var(--muted);font:inherit;cursor:pointer;padding:0;border-bottom:1px dashed var(--border)}
+.cr2:hover{color:var(--accent)}
+.nv{height:36px;display:flex;align-items:center;gap:9px;text-align:left;padding:0 10px;border:0;border-left:3px solid transparent;background:none;border-radius:9px;color:var(--muted);font-weight:600;cursor:pointer;font-size:14px;width:100%}
+.nv:hover{background:var(--surface2);color:var(--text)}
+.nv.on{background:var(--soft);color:var(--deep);border-left-color:var(--accent);font-weight:700}
+.nv .ico{width:16px;height:16px;flex:0 0 auto;opacity:.85}
+.nv .cnt{margin-left:auto;font-size:11px;font-weight:700;color:var(--muted)}
+.nv.on .cnt{color:var(--deep)}
+.nlab{font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted);font-weight:700;padding:14px 10px 6px;border-top:1px solid var(--border);margin-top:6px}
+.nlab:first-of-type{border-top:0;margin-top:0;padding-top:2px}
+.flist{display:grid;grid-template-columns:minmax(0,1fr);gap:1px;max-height:none}
+.flist .fv{display:flex;align-items:center;gap:8px;padding:6px 10px;border:0;background:none;border-radius:8px;cursor:pointer;text-align:left;font-size:13px;color:var(--muted);width:100%;min-width:0}
+.flist .fv:hover{background:var(--surface2);color:var(--text)}
+.flist .fv.on{background:var(--soft);color:var(--deep);font-weight:700}
+.flist .fv .no{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--accent);min-width:18px}
+.flist .fv .tx{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.flist .fv .dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex:0 0 auto}
+.flist .fv .dot.p{background:var(--accent)}
+.flist .fv .dot.f{background:var(--ok)}
+.sidefoot{margin-top:auto;display:grid;gap:7px;padding-top:12px;border-top:1px solid var(--border)}
+.progmini{display:grid;gap:5px;padding:2px 2px 6px}
+.progmini .pt{display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.4px}
+.progmini .pt b{color:var(--accent)}
+.pbar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(229,101,158,.16)}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:99px;transition:width .5s}
+.sidefoot .row{display:flex;gap:6px}
+.btn{height:36px;padding:0 12px;border:1px solid var(--border);background:var(--surface);color:var(--deep);border-radius:10px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;transition:.15s;font-size:13px}
+.btn:hover{background:var(--soft)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn.sm{height:30px;padding:0 9px;font-size:12px;border-radius:8px}
+.btn.gh{background:none;border-color:transparent;color:var(--muted)}
+.btn.gh:hover{background:var(--surface2);color:var(--text)}
+.btn .ico{width:14px;height:14px}
+/* ---------- main ---------- */
+.main{min-width:0;padding:26px 34px 90px;max-width:1000px;margin:0 auto;width:100%}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.crumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);letter-spacing:.4px;flex:1;min-width:0}
+.crumb b{color:var(--text);font-weight:600}
+.crumb .sep{opacity:.5}
+.top .save{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:5px;white-space:nowrap}
+.top .save .dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.mob{display:none}
+/* cover */
+.cover{position:relative;padding:6px 0 0}
+.cvhead{display:flex;align-items:center;justify-content:space-between;border-top:2px solid var(--text);border-bottom:1px solid var(--border);padding:9px 0;font-size:10.5px;letter-spacing:2.6px;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.cvhead .sf{font-family:var(--disp);font-size:15px;letter-spacing:1px;color:var(--deep)}
+.cvtitle{margin:44px 0 0;font-family:var(--disp);font-weight:800;font-size:clamp(46px,8vw,86px);line-height:.98;letter-spacing:-2.5px}
+.cvtitle i{display:block;font-style:italic;font-weight:400;font-size:.86em;letter-spacing:-1px;color:var(--deep);margin-top:2px}
+.cvrule{width:120px;height:3px;background:var(--deep);margin:18px 0 14px;border-radius:2px}
+.cvcat{font-family:var(--disp);font-size:clamp(20px,3vw,26px);letter-spacing:6px;font-weight:600;color:var(--text);text-transform:uppercase}
+.cvsub{color:var(--muted);font-size:15.5px;max-width:34em;margin-top:8px;line-height:1.6}
+.romans{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:42px 0 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0}
+.romans button{background:none;border:0;text-align:left;cursor:pointer;color:var(--text);padding:0;font-family:var(--serif)}
+.romans b{display:block;font-family:var(--disp);font-size:13px;color:var(--deep);letter-spacing:1px;margin-bottom:4px}
+.romans span{display:block;font-size:12.5px;color:var(--muted);line-height:1.35}
+.romans button:hover span{color:var(--accent)}
+.prof{display:grid;grid-template-columns:1fr 1fr;gap:26px 34px;margin:36px 0 0}
+.pf{border-bottom:1px solid var(--border);padding-bottom:5px}
+.pf label{display:block;font-size:10px;letter-spacing:2.2px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}
+.pf input{width:100%;border:0;background:none;outline:none;padding:3px 0;font-size:15.5px;font-family:var(--disp);font-weight:500}
+.pf input:focus{border-bottom:1px solid var(--accent)}
+.pf input::placeholder{color:var(--muted);opacity:.45;font-family:var(--serif);font-weight:400;font-size:14px}
+.printfoot{display:none}
+.cvfoot{display:flex;justify-content:space-between;gap:10px;border-top:2px solid var(--text);margin-top:44px;padding-top:8px;font-size:10px;letter-spacing:2.4px;text-transform:uppercase;font-weight:700;color:var(--muted)}
+/* dashboard */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:26px 0 20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 15px}
+.stat b{display:block;font-family:var(--disp);font-size:26px;font-weight:800;color:var(--accent);line-height:1.1}
+.stat span{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:2px;letter-spacing:.2px}
+.h2s{font-family:var(--disp);font-size:13px;letter-spacing:2.4px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:30px 0 12px;display:flex;align-items:center;gap:10px}
+.h2s:after{content:"";flex:1;height:1px;background:var(--border)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.fcard{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px 12px;cursor:pointer;display:grid;gap:5px;transition:.16s;position:relative;overflow:hidden}
+.fcard:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.fcard .n{font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:1.6px;color:var(--accent)}
+.fcard .t{font-family:var(--disp);font-size:14.5px;font-weight:600;line-height:1.3;color:var(--text)}
+.fcard .m{font-size:11px;color:var(--muted)}
+.fcard .b{display:block;width:100%;margin-top:7px}
+.fcard .b i{width:0}
+.badge{position:absolute;top:10px;right:10px;width:17px;height:17px;border-radius:50%;display:none;place-items:center;font-size:10px;color:#fff;background:transparent}
+.badge.done{display:grid}
+.badge.done{background:var(--ok);border-color:var(--ok)}
+/* fiche */
+.fiche{padding-bottom:30px}
+.eb{display:flex;justify-content:space-between;gap:12px;font-size:10px;letter-spacing:2.4px;text-transform:uppercase;font-weight:700;color:var(--muted);flex-wrap:wrap}
+.eb .r{color:var(--accent)}
+.fh1{font-family:var(--disp);font-size:clamp(28px,4vw,38px);font-weight:800;letter-spacing:-.8px;line-height:1.12;margin:10px 0 0}
+.frule{width:64px;height:2.5px;background:var(--deep);margin:12px 0 14px;border-radius:2px}
+.obj{font-style:italic;color:var(--muted);font-size:14.5px;max-width:62em;line-height:1.62}
+.obj b{color:var(--text);font-style:normal;font-weight:700;letter-spacing:.4px;text-transform:uppercase;font-size:10.5px}
+.sect{margin:30px 0 0}
+.sect>h2{font-family:var(--disp);font-size:12px;letter-spacing:1.9px;text-transform:uppercase;font-weight:700;color:var(--text);margin:0 0 12px;padding-bottom:7px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:baseline}
+.sect>h2 .num{color:var(--accent);font-size:12px;flex:0 0 auto}
+.sect>h2 .tip{margin-left:auto;font-size:10px;letter-spacing:.6px;text-transform:none;color:var(--muted);font-family:var(--serif);font-weight:400}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:end}
+.ff{display:grid;gap:3px;min-width:0}
+.ff label{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:700;line-height:1.3}
+.ff input,.ff select{height:38px;border:1px solid var(--border);background:var(--surface);border-radius:9px;padding:0 10px;outline:none;width:100%;font-size:14px;min-width:0}
+.ff input:focus,.ff select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft);background:var(--surface)}
+.ff input::placeholder{color:var(--muted);opacity:.55}
+.ta{width:100%;border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:10px 12px;outline:none;resize:vertical;font-family:var(--serif);font-size:14.5px;line-height:1.9;min-height:84px;background-image:repeating-linear-gradient(transparent,transparent calc(1.9em - 1px),var(--rule) calc(1.9em - 1px),var(--rule) 1.9em);background-attachment:local;background-position:0 10px}
+.ta:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
+.ta::placeholder{color:var(--muted);opacity:.55}
+.hint{color:var(--muted);font-size:12.5px;line-height:1.55;margin:-2px 0 8px;font-style:italic}
+.chks{display:grid;gap:12px}
+.ckg{display:grid;gap:7px}
+.ckg .l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.cks{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:5px 14px}
+.ck{display:flex;align-items:flex-start;gap:8px;font-size:14px;cursor:pointer;line-height:1.4;padding:2px 0}
+.ck input{appearance:none;width:16px;height:16px;border:1.5px solid var(--border);border-radius:4px;flex:0 0 auto;margin:2px 0 0;cursor:pointer;background:var(--surface);display:grid;place-items:center;transition:.12s}
+.ck input:checked{background:var(--accent);border-color:var(--accent)}
+.ck input:checked:after{content:"";width:8px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.ck:hover input{border-color:var(--accent2)}
+.tw{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface);-webkit-overflow-scrolling:touch}
+table.gt{width:100%;border-collapse:collapse;font-size:13.5px;min-width:100%}
+table.gt th{background:var(--surface2);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700;text-align:left;padding:8px 9px;border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0}
+table.gt td{border-bottom:1px solid var(--border);padding:0;vertical-align:middle}
+table.gt td+td,table.gt th+th{border-left:1px solid var(--border)}
+table.gt td.ci:hover{background:var(--soft)}
+table.gt tbody tr:hover td.rl{background:var(--surface2)}
+table.gt tr:last-child td{border-bottom:0}
+table.gt td.rl{padding:8px 10px;color:var(--text);font-size:12.8px;line-height:1.35;min-width:120px;background:var(--surface)}
+table.gt td.ci{padding:0}
+table.gt td.ci input,table.gt td.ci select{width:100%;height:36px;border:0;background:transparent;padding:0 8px;outline:none;font-size:13.5px;border-radius:0}
+table.gt td.ci input:focus,table.gt td.ci select:focus{background:var(--soft);box-shadow:inset 0 0 0 1.5px var(--accent)}
+table.gt td.c{text-align:center}
+table.gt td .mini{font-size:11.5px;color:var(--muted);line-height:1.3;display:block;padding:7px 9px}
+.callout{border-left:3px solid var(--deep);background:var(--surface2);border-radius:0 12px 12px 0;padding:12px 16px;font-size:13.8px;line-height:1.6;color:var(--text)}
+.callout.warn{border-left-color:var(--warn);background:linear-gradient(90deg,var(--soft),var(--surface2))}
+.callout .l{display:block;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;font-weight:700;color:var(--deep);margin-bottom:5px}
+.callout ul{margin:0;padding-left:17px;display:grid;gap:3px}
+.callout li{margin:0}
+.steps{counter-reset:st;display:grid;gap:9px;margin:0;padding:0;list-style:none}
+.steps li{counter-increment:st;display:grid;grid-template-columns:26px 1fr;gap:10px;font-size:14px;line-height:1.55;align-items:start}
+.steps li:before{content:counter(st);font-family:var(--disp);font-size:12px;font-weight:700;color:#fff;background:var(--accent);width:22px;height:22px;border-radius:50%;display:grid;place-items:center;margin-top:1px}
+.bul{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.bul li{position:relative;padding-left:16px;font-size:14px;line-height:1.5}
+.bul li:before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:5px;border-radius:50%;background:var(--accent2)}
+.riskgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rcell{border:1px solid var(--border);border-radius:14px;padding:13px 15px;background:var(--surface)}
+.rcell .l{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--accent);margin-bottom:7px}
+.rcell ul{margin:0;padding-left:15px;display:grid;gap:4px;font-size:13.4px;line-height:1.45}
+/* scores */
+.sc{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--surface)}
+.sc table{width:100%;border-collapse:collapse;font-size:13px}
+.sc th{background:var(--surface2);font-size:9.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--muted);padding:8px 10px;text-align:left;font-weight:700;border-bottom:1px solid var(--border)}
+.sc td{padding:6px 10px;border-bottom:1px solid var(--rule);vertical-align:middle}
+.sc tr:last-child td{border-bottom:0}
+.sc td.it{font-size:13.2px;line-height:1.35}
+.sc td.op{width:78px;text-align:center}
+.sc td.op label{display:grid;place-items:center;gap:2px;font-size:11px;color:var(--muted);cursor:pointer;padding:2px 0}
+.sc td.op input{appearance:none;width:15px;height:15px;border:1.5px solid var(--border);border-radius:50%;background:var(--surface);cursor:pointer;display:grid;place-items:center}
+.sc td.op input:checked{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 3px var(--surface)}
+.sc td.op input:checked+span{color:var(--deep);font-weight:700}
+.sc td.op select{width:100%;min-width:118px;height:32px;border:1px solid transparent;background:var(--surface);border-radius:7px;padding:0 6px;font-size:12.4px;outline:none;color:var(--text)}
+.sc td.op select:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--soft)}
+.sc .tot{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);font-weight:700;flex-wrap:wrap}
+.sc table.gt th{position:static}
+.sc .tot b{font-family:var(--disp);font-size:20px;color:var(--accent);letter-spacing:0}
+.sc .tot .vl{font-size:9.5px;letter-spacing:1px;color:var(--muted);margin-right:5px;font-weight:700}
+.sc .tot .vl:after{content:":"}
+.sc .tot .vs{opacity:.35;margin:0 4px;font-size:14px}
+.sc .tot .vd{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:600;color:var(--text);font-family:var(--serif);font-size:13px}
+/* seen toggle + fiche footer */
+.done-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:32px 0 0;padding:13px 16px;border:1px dashed var(--border);border-radius:12px;background:var(--surface2)}
+.done-row .lbl{flex:1;font-size:12px;letter-spacing:.4px;color:var(--muted);min-width:180px}
+.sw{position:relative;width:44px;height:24px;border-radius:99px;background:var(--border);border:0;cursor:pointer;flex:0 0 auto;transition:.18s;padding:0}
+.sw:after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.18s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw.on{background:var(--ok)}.sw.on:after{left:23px}
+.visa{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+/* notes */
+.notes{display:grid;gap:14px}
+.note{border:1px solid var(--border);border-radius:14px;padding:14px 16px;background:var(--surface);display:grid;gap:8px}
+.note .nh{display:flex;gap:8px;align-items:center}
+.note .nh input{flex:1;border:0;background:none;outline:none;font-family:var(--disp);font-weight:600;font-size:16px;color:var(--text);padding:2px 0;min-width:0}
+.note .nh input:focus{border-bottom:1px solid var(--accent)}
+.note .meta{font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.note textarea{border:0;background:transparent;padding:0;min-height:90px;background-image:repeating-linear-gradient(transparent,transparent calc(1.85em - 1px),var(--rule) calc(1.85em - 1px),var(--rule) 1.85em);background-position:0 4px;line-height:1.85}
+.note textarea:focus{box-shadow:none;border:0}
+/* misc */
+.empty{color:var(--muted);font-size:13.5px;font-style:italic;padding:14px 0}
+.pill{display:inline-block;background:var(--soft);color:var(--deep);border-radius:99px;padding:2px 9px;font-size:10.5px;font-weight:700;letter-spacing:.4px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:9px 16px;border-radius:99px;font-size:12.5px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:100;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.kb{position:fixed;inset:0;z-index:120;background:rgba(40,18,30,.55);backdrop-filter:blur(3px);display:none;padding:10vh 16px 16px;justify-content:center;align-items:flex-start}
+.kb.on{display:flex}
+.kbp{width:min(560px,100%);background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:0 24px 60px rgba(60,20,40,.3);overflow:hidden;max-height:74vh;display:flex;flex-direction:column}
+.kbp input{height:50px;border:0;border-bottom:1px solid var(--border);background:none;padding:0 16px;outline:none;font-size:15px;width:100%}
+.kbl{overflow-y:auto;padding:6px}
+.kbi{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:9px;cursor:pointer;width:100%;border:0;background:none;text-align:left;font-size:13.5px;color:var(--text)}
+.kbi:hover,.kbi.sel{background:var(--soft);color:var(--deep)}
+.kbi .no{font-family:var(--disp);font-weight:700;font-size:11px;color:var(--accent);min-width:22px}
+.kbi .ty{margin-left:auto;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.secband{display:flex;align-items:center;gap:14px;margin:38px 0 18px}
+.secband .rn{font-family:var(--disp);font-size:54px;font-weight:400;color:var(--soft);line-height:.8;letter-spacing:-2px}
+.secband h1{margin:0;font-family:var(--disp);font-size:clamp(26px,3.4vw,34px);font-weight:800;letter-spacing:-.6px}
+.secband p{margin:2px 0 0;font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);font-weight:700}
+body.embed .app{grid-template-columns:1fr}
+body.embed .side{position:fixed;left:0;top:0;width:282px;height:100dvh;transform:translateX(-103%);transition:transform .22s;box-shadow:var(--shadow);z-index:60}
+body.embed .side.open{transform:none}
+body.embed .mob{display:inline-flex}
+@media(max-width:1000px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;width:280px;transform:translateX(-102%);transition:.22s;box-shadow:var(--shadow);height:100dvh}
+  .side.open{transform:none}
+  .mob{display:inline-flex}
+  .main{padding:18px 16px 80px}
+  .stats{grid-template-columns:1fr 1fr}
+  .prof{grid-template-columns:1fr}
+  .riskgrid{grid-template-columns:1fr}
+  .visa{grid-template-columns:1fr}
+  .romans{grid-template-columns:1fr 1fr;gap:14px}
+  .sc{overflow-x:auto}
+}
+@media(max-width:760px){
+  .crumb{display:none}
+  .top{gap:6px}
+  .top .save{font-size:10.5px}
+}
+@media(max-width:560px){
+  .fg{grid-template-columns:1fr 1fr}
+  .cks{grid-template-columns:1fr 1fr}
+  .cvhead{font-size:8.5px;letter-spacing:1.6px}
+  body{font-size:14.5px}
+}
+@media print{
+  @page{size:A4;margin:13mm 12mm 19mm}
+  .side,.top,.toast,.kb,.done-row,.noprint{display:none!important}
+  .app{display:block}
+  body{background:#fff;font-size:10.5pt;color:#2b2126}
+  .main{padding:0;max-width:none}
+  .fh1{font-size:22pt}
+  .sect{margin-top:15px;break-inside:auto}
+  .ff input,.ff select,.ta,.note textarea,.note,table.gt td.ci input{border-color:#e7cfd9;background:#fff!important;background-image:none!important}
+  .ta{min-height:auto;height:auto;overflow:visible;field-sizing:content}
+  .tw{overflow:visible;break-inside:auto}
+  table.gt{font-size:8.6pt}
+  table.gt th{font-size:7.4pt;position:static}
+  .callout,.sc,.visa,.steps li,table.gt tr{break-inside:avoid}
+  .ff,.note,.rt{break-inside:avoid}
+  input::placeholder,textarea::placeholder{color:transparent!important}
+  .printfoot{display:flex!important;position:fixed;bottom:0;left:0;right:0;justify-content:space-between;gap:10px;font-size:7.6pt;letter-spacing:1.6px;text-transform:uppercase;color:#8f7683;border-top:1px solid #e7cfd9;padding-top:4px;background:#fff}
+  .sc td.op{padding:2px 6px}
+  .sc td.op select{border:0;background:none;appearance:none;padding:0;min-width:0;height:auto;font-size:8.6pt}
+  .sc .tot{border-top:1px solid #e7cfd9}
+  .cover{page-break-after:always}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side" id="side">
+  <div class="brand"><b>Carnet <i>de stage</i></b><small>Sage-femme · SF</small></div>
+  <div class="searchbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" placeholder="Chercher une fiche…" autocomplete="off" spellcheck="false">
+    <kbd>⌘K</kbd>
+  </div>
+  <nav>
+    <button class="nv on" data-go="home"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v13"/><path d="M4 19h16"/><path d="M8 4v15"/></svg>Couverture &amp; sommaire</button>
+    <div class="nlab">I · Fiches cliniques</div>
+    <div class="flist" id="flist"></div>
+    <div class="nlab">II · Situations à risque</div>
+    <button class="nv" data-go="risques"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 9v5M12 17.2v.2"/></svg>Repérer · alerter · orienter<span class="cnt" id="cntR"></span></button>
+    <div class="nlab">III à V · Outils</div>
+    <button class="nv" data-go="annexes"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 12h16M4 19h10"/></svg>Annexes · scores</button>
+    <button class="nv" data-go="notes"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h9l5 5v11H5z"/><path d="M14 4v5h5"/><path d="M8 13h8M8 17h5"/></svg>Notes libres</button>
+    <button class="nv" data-go="memo"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M8 15h2M12 15h2"/></svg>Mémo clinique</button>
+  </nav>
+  <div class="sidefoot">
+    <div class="progmini"><div class="pt"><span>Mon carnet</span><b id="glob">0 %</b></div><div class="pbar"><i id="globbar"></i></div></div>
+    <div class="row"><button class="btn sm" id="theme" title="Thème clair / sombre">Sombre</button><button class="btn sm" id="exp" title="Sauvegarder une copie de mes données">Sauvegarde</button><button class="btn sm" id="imp" title="Restaurer une sauvegarde">↥</button></div>
+    <button class="btn sm gh" id="pr" style="width:100%">Imprimer / PDF</button>
+  </div>
+</aside>
+
+<main class="main" id="main">
+  <div class="top">
+    <button class="btn sm mob" id="menu" aria-label="Menu">☰</button>
+    <div class="crumb" id="crumb"></div>
+    <div class="save" id="save"><span class="dot"></span><span id="savetx">Enregistré sur cet appareil</span></div>
+  </div>
+  <div id="view"></div>
+</main>
+</div>
+
+<div class="printfoot" id="pf"><span id="pfname">Nom, prénom</span><span>Carnet de stage — Sage-femme</span></div>
+<div class="toast" id="toast"></div>
+<div class="kb" id="kb"><div class="kbp"><input id="kq" placeholder="Fiche, situation à risque, calcul…" autocomplete="off"><div class="kbl" id="kbl"></div></div></div>
+<input type="file" id="fileIn" accept="application/json,.json" style="display:none">
+<script>
+/* ============================================================
+   Carnet de stage — Sage-femme · application interactive
+   Données : Protocoles et procédures de prise en charge de la
+   grossesse, de l'accouchement et de la période post-natale
+   (Ministère de la Santé, DGSRH, éd. 2025)
+   ============================================================ */
+const CF=[
+{id:'01',t:'Consultation prénatale initiale',s:'Prénatal · Consultation',
+ o:'Conduire un premier entretien complet, repérer les facteurs de risque, poser le bilan du premier trimestre et vérifier que la patiente a compris ce qui lui est proposé.',b:[
+ {k:'note',h:'01 · Motif de la consultation et demande de la patiente',rows:3},
+ {k:'checks',h:'02 · Antécédents',g:[
+  {l:'Médicaux',o:['HTA','Épilepsie','Cardiopathie','Drépanocytose','Diabète','Asthme','Dysthyroïdie','IST']},
+  {l:'Chirurgicaux',o:['Césarienne','Kyste ovarien','Appendicectomie','Myomectomie','Traumatisme du bassin','Autre']}]},
+ {k:'note',h:'Antécédents gynécologiques / familiaux',rows:2,
+  hint:'Âge des premières règles · durée des cycles · contraception antérieure · infections · fausses couches · chirurgie cervicale. Diabète · HTA · jumeaux · malformations · pathologie thromboembolique · hémoglobinopathie.'},
+ {k:'table',h:'03 · Antécédents obstétricaux',cols:['GEST.','ANNÉE','TERME',"MODE D'ACCOUCHEMENT","POIDS DE L'ENFANT",'SUITES / OBSERVATIONS'],rows:['G1','G2','G3'],
+  hint:'Noter la parité par : accouchement par voie basse · césarienne · instrumental · mort fœtale in utero · interruption · GEU.'},
+ {k:'fields',h:'04 · Examen général',f:[
+  {l:'Date',t:'date'},{l:'Heure',t:'time'},{l:'Terme (SA)',t:'text',ph:'ex. 32 SA + 4'},
+  {l:'Gestité / Parité',t:'text',ph:'G2 P1'},{l:'Lieu / Service',t:'text'},{l:'Tension artérielle',t:'text',ph:'120/70'},
+  {l:'Pouls',t:'text'},{l:'Température',t:'text'},{l:'Poids',t:'text'},
+  {l:'Taille',t:'text'},{l:'IMC',t:'text'},{l:'Œdèmes, varices, signes fonctionnels',t:'text'},
+  {l:'Bandelette urinaire (protéinurie, glycosurie)',t:'text'},{l:'Hauteur utérine',t:'text'},{l:'BCF / min',t:'text'},
+  {l:'Présentation',t:'text'},{l:'Toucher vaginal (si indiqué)',t:'text'}]},
+ {k:'checks',h:'05 · Bilan prescrit et examens expliqués à la patiente',g:[{l:'',o:['Groupe, RAI','Syphilis, VIH, VHB','NFS, plaquettes','ECBU','Glycémie','Échographie','Toxoplasmose, rubéole','Frottis']}]},
+ {k:'note',h:'Conduite à tenir, conseils, date du prochain rendez-vous',rows:3},
+ {k:'note',h:'Observations et points à revoir',rows:3},
+ {k:'visa'}]},
+
+{id:'02',t:'Consultation de suivi et examen obstétrical',s:'Prénatal · Suivi',
+ o:"Réaliser l'examen obstétrical complet d'une grossesse qui se déroule bien, en nommant chaque temps, et repérer les éléments qui feraient changer la conduite à tenir.",b:[
+ {k:'table',h:'01 · Palpation abdominale — quatre temps',cols:['TEMPS','CE QUE JE CHERCHE','CONSTAT'],
+  rows:['Hauteur utérine','Situation','Présentation','Position / variété'],
+  sub:['Croissance, concordance avec le terme','Longitudinale, transversale, oblique','Céphalique, siège, transverse ; mobile ou fixée','Dos à gauche ou à droite, pôle au détroit supérieur']},
+ {k:'fields',h:'02 · Auscultation et tocographie',f:[
+  {l:'Fréquence cardiaque fœtale',t:'text'},{l:'Rythme (régulier, oscillations)',t:'text'},
+  {l:"Localisation de l'auscultation",t:'text'},{l:'Contractions : fréquence / 10 min',t:'text'}]},
+ {k:'table',h:'03 · Toucher vaginal',cols:['ÉLÉMENT','DESCRIPTION ATTENDUE','CONSTAT / CONDUITE À TENIR'],
+  rows:['Col — longueur','Col — consistance','Col — position','Dilatation','Présentation et variété','Hauteur / engagement','Membranes','Bassin'],
+  sub:['Long, mi-long, court, effacé','Ferme, intermédiaire, mou','Postérieur, intermédiaire, antérieur','En centimètres, de 0 à 10','Céphalique, siège ; variété d’engagement','Mobile, amorcée, fixée ; échelle -3 à +3','Intactes, tendues ; rupture : heure et aspect','Promontoire accessible ou non, diamètres']},
+ {k:'fields',h:'04 · Synthèse et conduite à tenir',f:[
+  {l:'Date',t:'date'},{l:'Heure',t:'time'},{l:'Terme (SA)',t:'text'},{l:'Gestité / Parité',t:'text'},
+  {l:'Lieu / service',t:'text'},{l:'Durée et intensité des contractions',t:'text'},
+  {l:'Réactivité fœtale aux mouvements',t:'text'},{l:'Grossesse eutocique',t:'text'},{l:'Facteur de risque repéré',t:'text'},
+  {l:'Prochain rendez-vous',t:'date'},{l:'Examens à prévoir',t:'text'}]},
+ {k:'note',h:"Ce que j'ai expliqué à la patiente et ce qu'elle a retenu",rows:3},
+ {k:'note',h:'Observations et points à revoir',rows:6},
+ {k:'visa'}]},
+
+{id:'03',t:'Observation en pré-travail',s:'Prénatal · Admission',
+ o:"Décider, à l'arrivée, si la patiente est en travail ou non — et donc si elle reste, si elle rentre, ou si l'on déclenche. Fiche à remplir dans l'heure qui suit l'admission.",b:[
+ {k:'note',h:'01 · Interrogatoire — antécédents médicaux, chirurgicaux, obstétricaux',rows:2},
+ {k:'note',h:'Grossesse actuelle : suivi, complications, sérologies, groupe · traitements · allergies',rows:2},
+ {k:'checks',h:"Motif d'hospitalisation / d'admission",g:[{l:'',o:['Contractions','Perte des eaux','Métrorragies','Diminution des mouvements','Consultation programmée','Autre']}]},
+ {k:'note',h:'Heure de début des contractions, régularité, intensité',rows:2},
+ {k:'table',h:'02 · Examen général et obstétrical',cols:['EXAMEN','MESURE','INTERPRÉTATION / OBSERVATIONS'],
+  rows:['Tension artérielle','Pouls','Température','Œdèmes, poids','Hauteur utérine','Contractions (fréquence, durée)','BCF : fréquence, rythme','Toucher vaginal : col, dilatation','Présentation, hauteur, membranes','Bandelette urinaire']},
+ {k:'fields',h:'03 · Conclusion',f:[
+  {l:'Âge',t:'text'},{l:'Profession (facultatif)',t:'text'},{l:'DDR',t:'date'},
+  {l:'DPA',t:'date'},{l:"Date d'arrivée",t:'date'},{l:"Heure d'arrivée",t:'time'},
+  {l:"Mode d'admission",t:'text'},{l:'Terme (SA)',t:'text'},{l:'Gestité / parité',t:'text'},
+  {l:'En travail (oui / non)',t:'select',o:['—','Oui','Non']},{l:'Phase (latente, active)',t:'select',o:['—','Latente','Active']},
+  {l:'Décision : salle de naissance, secteur, retour',t:'text'}]},
+ {k:'note',h:'Surveillance décidée et heure de réévaluation',rows:3},
+ {k:'note',h:'Observations et points à revoir',rows:6},
+ {k:'visa',lab1:"Signature de l'étudiant",lab2:'Visa de la sage-femme'}]}
+];
+
+CF.push(
+{id:'04',t:'Surveillance du travail',s:'Prénatal · Salle de naissance',
+ o:'Tracé horaire. Une ligne toutes les heures au minimum, toutes les trente minutes en phase active ; toute anomalie se note et s’annonce. La seconde partie sert à l’analyse et aux décisions.',b:[
+ {k:'table',h:'01 · Tracé horaire',n:9,first:'input',
+  cols:['HEURE','TA / POULS','T°','CONTRACT.','BCF','DILAT.','COL','MEMBR.','PRÉSENT.','OBSERVATIONS']},
+ {k:'static',h:'02 · Repères de progression',ul:[
+  'Phase latente : col qui s’efface, dilatation jusqu’à 5 cm, contractions irrégulières.',
+  'Phase active : de 5 à 10 cm, dilatation d’environ 1 cm/heure chez la primipare.',
+  'Deuxième phase : efforts de poussée, descente et dégagement.']},
+ {k:'callout',h:'03 · À annoncer sans attendre',warn:1,ul:[
+  'Rythme cardiaque fœtal anormal ou plat · liquide méconial · métrorragies · hyperthermie · HTA ou protéinurie.',
+  'Arrêt de la progression · envie de pousser avant dilatation complète · douleur atypique ou continue.']},
+ {k:'fields',h:'04 · Tracé et monitorage',f:[
+  {l:'Date',t:'date'},{l:"Heure d'entrée",t:'time'},{l:'Terme (SA)',t:'text'},{l:'Gestité / parité',t:'text'},
+  {l:'Salle / box',t:'text'},{l:'Auscultation intermittente (oui / non)',t:'select',o:['—','Oui','Non']},
+  {l:'Monitorage débuté à',t:'time'},{l:'Analgésie (type, heure)',t:'text'},{l:'Perfusion / médicaments',t:'text'}]},
+ {k:'note',h:'05 · Transmissions et relève — ce que je transmets (situation, risque, action)',rows:3},
+ {k:'note',h:"Question posée à l'encadrant, réponse obtenue",rows:2},
+ {k:'note',h:'Notes horodatées',rows:3},
+ {k:'note',h:'Observations et points à revoir',rows:3},
+ {k:'sub',h:'Analyse du travail'},
+ {k:'table',h:'01 · Touchers vaginaux successifs',n:4,first:'input',
+  cols:['HEURE','COL (LONGUEUR, CONSISTANCE)','DILATATION','PRÉSENTATION / VARIÉTÉ','HAUTEUR','MEMBRANES']},
+ {k:'table',h:'02 · Lecture du rythme cardiaque fœtal',cols:['ÉLÉMENT','CONSTAT','INTERPRÉTATION'],
+  rows:['Fréquence de base','Variabilité','Accélérations','Ralentissements (précoces, tardifs, variables)','Contractions : tonus, fréquence'],
+  sub:['110 à 160 / min en rythme rassurant','Oscillations présentes, 5–25 / min','Présentes en réponse aux mouvements','Précoces et isolés : rassurant ; tardifs ou répétés : alerter','3 à 5 par 10 min en phase active']},
+ {k:'fields',h:'03 · Synthèse et décision',f:[
+  {l:'Date',t:'date'},{l:"Heure d'entrée",t:'time'},{l:'Terme (SA)',t:'text'},{l:'Gestité / parité',t:'text'},
+  {l:'Salle / box',t:'text'},{l:'Bien-être fœtal',t:'text'},{l:'Information donnée à la patiente',t:'text'},
+  {l:'Phase du travail',t:'text'},{l:'Progression (normale, lente, arrêt)',t:'select',o:['—','Normale','Lente','Arrêt']},
+  {l:'Avis médical demandé à',t:'time'},{l:'Décision : poursuite / amniotomie / ocytocine',t:'text'},{l:'Heure de la décision',t:'time'}]},
+ {k:'note',h:"Ce que j'ai compris de la situation et ce que je referais autrement",rows:3},
+ {k:'note',h:'Notes sur le tracé et la décision',rows:2},
+ {k:'note',h:'Observations et points à revoir',rows:3},
+ {k:'visa'}]},
+
+{id:'05',t:'Accouchement et délivrance',s:'Natal · Accouchement',
+ o:'Reconstituer le déroulement complet d’un accouchement, de l’admission à la première heure du post-partum, avec les heures, les gestes et l’état du nouveau-né.',b:[
+ {k:'fields',h:'01 · Déroulement du travail',f:[
+  {l:'Date',t:'date'},{l:"Heure d'admission",t:'time'},{l:'Terme (SA)',t:'text'},{l:'Gestité / parité',t:'text'},
+  {l:'Salle',t:'text'},{l:'Début du travail',t:'time'},{l:'Rupture spontanée / artificielle',t:'select',o:['—','Spontanée','Artificielle']},
+  {l:'Heure de la rupture',t:'time'},{l:'Aspect du liquide',t:'text'},{l:'Analgésie (type, heure)',t:'text'},
+  {l:'Ocytocine (dose, durée)',t:'text'},{l:'Dilatation complète à',t:'time'},{l:'Durée totale du travail',t:'text'}]},
+ {k:'table',h:'02 · Expulsion',cols:['ÉLÉMENT','CONSTAT','OBSERVATIONS'],
+  rows:['Heure de naissance','Présentation, variété','Efforts de poussée : durée','Périnée : intact, épisiotomie, déchirure','Sutures (type, nombre, fil)','Manœuvres ou aide (siège, dystocie)','Accompagnement : position, présence du père']},
+ {k:'fields',h:'03 · Délivrance',f:[
+  {l:'Heure de la délivrance',t:'time'},{l:'Dirigée / physiologique',t:'select',o:['—','Dirigée','Physiologique']},
+  {l:'Complète (oui / non)',t:'select',o:['—','Oui','Non']},{l:'Administration préventive',t:'text'},
+  {l:'Aspect du placenta',t:'text'},{l:'Saignement estimé (mL)',t:'text'},
+  {l:'Révision utérine (oui / non)',t:'select',o:['—','Oui','Non']},{l:'État du périnée après',t:'text'}]},
+ {k:'fields',h:'04 · Nouveau-né et première heure',f:[
+  {l:'Sexe',t:'select',o:['—','Féminin','Masculin']},{l:'Poids (g)',t:'text'},{l:'Taille (cm)',t:'text'},
+  {l:'Périmètre crânien (cm)',t:'text'},{l:'Apgar 1 / 5 / 10 min',t:'text',ph:'8 / 9 / 10'},
+  {l:'Réanimation (aspiration, O2, autre)',t:'text'},{l:'Peau à peau (heure, durée)',t:'text'},
+  {l:'Première mise au sein',t:'text'},{l:'État de la mère à la première heure',t:'text'}]},
+ {k:'note',h:'Observations et points à revoir',rows:4},
+ {k:'visa'}]},
+
+{id:'06',t:'Post-partum immédiat et suites de couches',s:'Post-natal · Suites de couches',
+ o:'Surveiller les deux heures qui suivent l’accouchement — le moment où surviennent la majorité des hémorragies — puis suivre l’involution et la reprise des fonctions jusqu’à la sortie.',b:[
+ {k:'table',h:'01 · Surveillance des deux premières heures',n:6,first:'input',
+  cols:['HEURE','TA / POULS','T°','UTÉRUS','SAIGNEMENTS','PÉRINÉE','VESSIE','DOULEUR','OBSERVATIONS']},
+ {k:'callout',h:'Critères d’alerte — appeler immédiatement',warn:1,ul:[
+  'Saignement abondant ou caillots · utérus mou, mal rétracté ou remontant · pâleur, sueurs, tachycardie, hypotension · malaise.',
+  'Douleur pelvienne intense ou croissante · vessie globe · angoisse ou sensation de malaise exprimée par la patiente.']},
+ {k:'table',h:'02 · Surveillance des suites de couches',tail:1,cols:['ÉLÉMENT','J1','J2','J3','ANOMALIE À SIGNALER'],
+  rows:['Température, TA, pouls','Hauteur utérine, involution','Lochies (aspect, odeur)','Périnée / cicatrice','Seins (montée laiteuse)','Mictions, transit','Douleur, sommeil','Humeur, lien au bébé'],
+  sub:['Fièvre, HTA, tachycardie','Utérus gros et mou','Fétides, retour de sang rouge','Léchage, hématome, désunion','Engorgement, crevasse, mastite','Rétention, constipation','Douleur non contrôlée','Tristesse, anxiété, ambivalence']},
+ {k:'fields',h:'03 · Sortie',f:[
+  {l:'Date',t:'date'},{l:"Heure d'accouchement",t:'time'},{l:'Terme (SA)',t:'text'},{l:'Gestité / parité',t:'text'},
+  {l:'Salle',t:'text'},{l:'Jour de sortie',t:'text'},{l:'Relais (PMI, sage-femme libérale)',t:'text'},
+  {l:'Contraception retenue',t:'text'}]},
+ {k:'note',h:'Consignes données et signes d’alerte expliqués à la patiente',rows:3},
+ {k:'note',h:'Observations et points à revoir',rows:4},
+ {k:'visa'}]}
+);
+
+CF.push(
+{id:'07',t:'Examen du nouveau-né et score d’Apgar',s:'Néonatal · Examen',
+ o:'Coter l’adaptation à la vie extra-utérine, puis réaliser l’examen complet du nouveau-né en nommant ce que l’on cherche — et repérer ce qui doit être revu par un médecin.',b:[
+ {k:'score',h:'01 · Score d’Apgar',id:'apgar',cols:[{l:'1 min'},{l:'5 min'},{l:'10 min'}],
+  items:[
+   {l:'Fréquence cardiaque',o:['Absente','< 100 / min','> 100 / min']},
+   {l:'Respiration',o:['Absente','Faible, irrégulière','Cri franc']},
+   {l:'Tonus musculaire',o:['Flascidité','Flexion partielle','Mouvements actifs']},
+   {l:'Réflexes (irritabilité)',o:['Aucun','Grimace','Cri, toux, éternuement']},
+   {l:'Coloration',o:['Pâle ou cyanose','Extrémités cyanosées','Rose']}],
+  note:'Somme des cinq critères, sur 10. À 1 et 5 minutes, réévalué à 10 min si besoin.',
+  interpret:v=>v[0]<=3?'Dépression sévère — réanimation':v[0]<=6?'Dépression modérée — réanimation':'Adaptation normale'},
+ {k:'table',h:'02 · Examen clinique systématique',cols:['RÉGION / FONCTION','CE QUE L’ON RECHERCHE','CONSTAT'],
+  rows:['Tonus, cri, activité','Coloration, température','Respiration, auscultation','Cœur, pouls fémoraux','Tête, fontanelles','Face, yeux, bouche','Cou, clavicules, bras','Mains, pieds, plis','Abdomen, ombilic','Dos, rachis, anus','Hanches','Organes génitaux','Peau, réflexes archaïques'],
+  sub:['Symétrie, réactivité, qualité du cri','Ictère, pâleur, hypothermie','Fréquence, tirage, murmure vésiculaire','Souffle, battements perçus','Bombement, dépression, bosse séro-sanguine','Symétrie, réflexes, frein de langue, palais','Fracture, paralysie du plexus','Doigts, syndactylie, pieds bots','Masses, hernie, cordon (deux artères)','Fossette, spina bifida, perméabilité','Manœuvre d’Ortolani, symétrie des plis','Testicules, ambiguïté, écoulement','Érythème, vésicules, Moro, succion, grasping']},
+ {k:'checks',h:'03 · Soins et dépistages réalisés',g:[{l:'',o:['Vitamine K','Test auditif','Mise au sein précoce','Soin du cordon','Sérologies / vaccins','Examen par un médecin','Dépistage néonatal (J3)','Premier bain','Autre']}]},
+ {k:'fields',h:'Conclusion : nouveau-né eutrophe / à surveiller / avis médical demandé',f:[
+  {l:'Date et heure',t:'text'},{l:'Terme (SA)',t:'text'},{l:'Poids (g)',t:'text'},
+  {l:'Sexe',t:'select',o:['—','Féminin','Masculin']},{l:'Accouchement',t:'text'},
+  {l:'Conclusion',t:'select',o:['—','Eutrophe','À surveiller','Avis médical demandé']}]},
+ {k:'note',h:'Observations et points à revoir',rows:4},
+ {k:'visa'}]},
+
+{id:'08',t:'Allaitement : observation d’une tétée',s:'Post-natal · Allaitement',
+ o:'Observer une tétée sans intervenir d’emblée, nommer ce qui fonctionne et ce qui gêne, puis proposer une seule correction à la fois — et vérifier qu’elle est comprise.',b:[
+ {k:'note',h:'01 · Contexte — difficulté exprimée par la mère · traitement, contre-indication éventuelle',rows:3},
+ {k:'table',h:'02 · Observation de la tétée',cols:['ÉLÉMENT OBSERVÉ','SIGNE ATTENDU','CONSTAT'],
+  rows:['Position et maintien','Prise du sein','Succion','Déglutition','Douleur ressentie (EVA / 10)','Durée et sein utilisé'],
+  sub:['Tête, épaule et hanche alignées, corps contre la mère','Bouche grande ouverte, lèvre inférieure retroussée, menton au sein','Rapide au début, puis lente et ample','Bruit audible, pauses respiratoires','Absente ou légère, pas de pincement persistant','Tétée complète, les deux seins si besoin']},
+ {k:'score',h:'03 · Score d’observation LATCH',id:'latch',cols:[{l:'Note'}],
+  items:[
+   {l:'Prise du sein',o:['Répétée, inefficace','Efforts répétés, aide nécessaire','Franche, sans aide']},
+   {l:'Déglutition audible',o:['Aucune','Quelques-unes','Spontanée et régulière']},
+   {l:'Type de mamelon',o:['Ombiliqué, invaginé','Plat','Protractile']},
+   {l:'Confort de la mère',o:['Douloureux, crevasses','Gêne, tension','Confortable']},
+   {l:'Maintien et position',o:['Aide complète','Aide partielle, quelques consignes','Sans aide']}],
+  note:'Chaque item coté de 0 à 2 ; total sur 10.'},
+ {k:'fields',h:'04 · Correction proposée et suite',f:[
+  {l:'Date',t:'date'},{l:'Heure',t:'time'},{l:'Jours de vie',t:'text'},{l:'Parité',t:'text'},
+  {l:'Terme / poids de naissance',t:'text'},{l:'Peau à peau en salle de naissance',t:'select',o:['—','Oui','Non']},
+  {l:'Première tétée (heure)',t:'time'},{l:'Projet d’allaitement',t:'text'},{l:'Aide déjà reçue',t:'text'},
+  {l:'Difficulté repérée : crevasse, engorgement, frein court, baisse de lactation',t:'text'},
+  {l:'Tire-lait / complément',t:'text'},{l:'Relais (consultante, PMI, sage-femme)',t:'text'}]},
+ {k:'note',h:'Conseil donné (un seul à la fois) et reformulation par la mère',rows:3},
+ {k:'note',h:'Observations et points à revoir',rows:4},
+ {k:'visa'}]},
+
+{id:'09',t:'Contraception et visite post-natale',s:'Post-natal · Contraception',
+ o:'Mener l’entretien contraceptif du post-partum en tenant compte de l’allaitement, du risque thrombo-embolique et du choix de la femme, puis clore le suivi par un examen complet.',b:[
+ {k:'fields',h:'01 · Examen et état général',f:[
+  {l:'Date',t:'date'},{l:'J post-partum',t:'text'},{l:'Allaitement',t:'select',o:['—','Exclusif','Mixte','Non']},
+  {l:'Parité',t:'text'},{l:'Lieu',t:'text'},{l:'Tension artérielle',t:'text'},{l:'Pouls',t:'text'},
+  {l:'Poids',t:'text'},{l:'Involution utérine',t:'text'},{l:'Périnée / cicatrice',t:'text'},{l:'Seins',t:'text'},
+  {l:'Lochies · retour de couches',t:'text'}]},
+ {k:'fields',h:'02 · État psychique',f:[
+  {l:'Douleur, sommeil, fatigue',t:'text'},{l:'Tristesse, anxiété, ambivalence',t:'text'},
+  {l:'Score EPDS (si réalisé)',t:'text'},{l:'Orientation proposée',t:'text'}]},
+ {k:'table',h:'03 · Choix contraceptif',cols:['MÉTHODE','COMPATIBILITÉ ALLAITEMENT','CONTRE-INDICATIONS À VÉRIFIER','CHOISIE'],
+  selcol:3,sels:['—','Oui'],
+  rows:['Pilule microprogestative','Pilule estroprogestative','Implant','DIU cuivre','DIU hormonal','Préservatif','Méthode MAMA'],
+  sub:['Compatible','À éviter pendant l’allaitement','Compatible','Compatible','Compatible, selon le délai retenu par l’équipe','Compatible','Allaitement exclusif'],
+  sub2:['Antécédent thrombo-embolique, cancer du sein','Migraine avec aura, tabac, HTA, alitement','Pathologie hépatique, saignement non expliqué','Infection en cours, malformation utérine','Idem, selon le délai retenu par l’équipe','Aucune ; protection des IST','Conditions strictes à vérifier']},
+ {k:'fields',h:'04 · Prescription et informations',f:[
+  {l:'Méthode retenue',t:'text'},{l:'Rééducation périnéale',t:'text'},{l:'Reprise d’activité',t:'text'},
+  {l:'Vaccinations',t:'text'},{l:'Prochain rendez-vous',t:'date'}]},
+ {k:'note',h:'Méthode retenue, mode d’emploi expliqué, ordonnance remise',rows:2},
+ {k:'fields',h:'05 · Examen de l’enfant à la visite',f:[
+  {l:'Poids / taille / PC',t:'text'},{l:'Alimentation, selles, urines',t:'text'},
+  {l:'Ictère, tonus, cordon',t:'text'},{l:'Vaccins à jour',t:'select',o:['—','Oui','Non']}]},
+ {k:'note',h:'Ce que la patiente a compris et reformulé',rows:2},
+ {k:'note',h:'Observations et points à revoir',rows:3},
+ {k:'visa'}]},
+
+{id:'10',t:'Hémorragie du post-partum',s:'Natal · Urgence',
+ o:'Savoir reconnaître, alerter et agir dans l’ordre. Cette fiche se remplit à chaud, ou se relit à froid après une situation vécue — jamais pendant l’urgence. La fiche R12 en donne la version « protocole ».',b:[
+ {k:'callout',h:'Définition et repères',
+  p:'Hémorragie du post-partum : perte sanguine d’environ 500 mL ou plus dans les 24 heures qui suivent l’accouchement ; forme sévère à partir de 1 000 mL ou en présence de signes de mauvaise tolérance. Le protocole national algérien retient 1 000 mL ou une perte accompagnée de signes d’hypovolémie : retenir surtout qu’une perte mal tolérée est une HPP, quel que soit le chiffre. Se référer au protocole affiché dans l’unité.'},
+ {k:'table',h:'01 · Chronologie des actions',n:6,first:'input',
+  cols:['HEURE','TA / POULS','SAIGNEMENT (mL)','UTÉRUS','GESTE RÉALISÉ','MÉDICAMENT / DOSE','QUI']},
+ {k:'steps',h:'02 · Séquence attendue',s:[
+  'Appeler à l’aide, annoncer clairement « hémorragie du post-partum » et l’heure.',
+  'Évaluer la perte : sac de recueil ou pesée, ne pas se fier à l’impression visuelle.',
+  'Vérifier les constantes, poser deux voies veineuses de bon calibre, débuter le remplissage.',
+  'Massage utérin, vérifier la vacuité vésicale, rechercher une déchirure ou un hématome.',
+  'Administrer l’utérotonique selon le protocole du service, puis les traitements de deuxième intention.',
+  'Réaliser les prélèvements, vérifier le groupe et la réserve de sang, surveiller la diurèse.',
+  'Informer la patiente à chaque étape, rester auprès d’elle, installer le nouveau-né au sein ou au chaud.',
+  'Tracer heure par heure : ce qui a été fait, par qui, avec quel effet.']},
+ {k:'note',h:'03 · Retour sur la situation — ce que j’ai fait, ce que j’ai vu',rows:3},
+ {k:'note',h:'Ce que je n’ai pas su faire ou anticiper',rows:2},
+ {k:'note',h:'Notes prises après la situation',rows:3},
+ {k:'fields',h:'Repères de la situation',f:[
+  {l:'Date et heure',t:'text'},{l:"Heure d'accouchement",t:'time'},{l:'Terme (SA)',t:'text'},
+  {l:'Gestité / parité',t:'text'},{l:"Délai depuis l'accouchement",t:'text'},{l:'À réviser',t:'text'}]},
+ {k:'note',h:'Question à poser à l’équipe',rows:2},
+ {k:'note',h:'Observations et points à revoir',rows:3},
+ {k:'visa'}]}
+);
+
+/* ---------------- II · SITUATIONS À RISQUE ---------------- */
+const CR=[
+{id:'R1',t:'HTA et pré-éclampsie',cat:'Périnatal · Tension',
+ intro:'HTA de la grossesse : PAS ≥ 140 mmHg et/ou PAD ≥ 90 mmHg. Pré-éclampsie : HTA associée à une protéinurie ≥ 300 mg/24 h (ou un ratio protéinurie/créatininurie ≥ 30 mg/mmol) apparue après 20 SA. Elle complique 5 à 10 % des grossesses et reste la première cause de morbidité maternelle et fœtale.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['TA ≥ 140/90 en consultation, à confirmer hors du cabinet','Céphalées, troubles visuels, acouphènes','Œdèmes, prise de poids rapide','Protéinurie à la bandelette ≥ 1 +','Antécédents de pré-éclampsie, HTA chronique, diabète, néphropathie','Grossesse multiple, primiparité, changement de partenaire']},
+  {l:'Vérifier — constantes, examen, bilan',u:['TA aux deux bras, brassard adapté, après 5 min de repos','Bandelette urinaire puis protéinurie des 24 h ou ratio P/Cr','NFS-plaquettes, LDH, haptoglobine, schizocytes','Créatinine, uricémie, ASAT-ALAT, bilirubine, TP-TCA-fibrinogène','Groupe, rhésus, RAI','ERCF, échographie obstétricale et Doppler']},
+  {l:'Hospitaliser ou transférer',u:['PAS ≥ 160 et/ou PAD ≥ 110 mmHg','Signes neurologiques persistants, ROT vifs et polycinétiques','Barre épigastrique ou douleur de l’hypochondre droit','Dyspnée, douleur thoracique, œdème aigu du poumon','Oligurie ≤ 500 mL/24 h, cytolyse > 2N, plaquettes < 100 000','Suspicion d’hématome rétroplacentaire']},
+  {l:'Surveiller et tracer',u:['TA et pouls selon protocole, diurèse, poids','Protéinurie, plaquettes, transaminases, créatinine','RCF et mouvements actifs fœtaux','Réflexes ostéotendineux si sulfate de magnésium','Post-partum : poursuivre la surveillance tensionnelle']}],
+ steps:['Poser une voie veineuse, bilan HTA et pré-opératoire, PA automatisée, monitoring fœtal selon le terme.',
+  'Objectif : PAS < 160 mmHg et PAD entre 85 et 100 mmHg ; éviter les à-coups tensionnels.',
+  'Voie orale en première intention : alphaméthyldopa, labétalol ou nicardipine (nifédipine sublinguale contre-indiquée).',
+  'Si signe de gravité : labétalol IV en première intention, puis nicardipine ou urapidil, en titration.',
+  'Contre-indications : IEC, ARA II et diurétiques.',
+  'Prévention : aspirine 150 mg chez les patientes à haut risque, de 11–14 SA jusqu’à 35 SA au moins.',
+  'Bétaméthasone 12 mg × 2 à 24 h d’intervalle si pré-éclampsie avant 34 SA.'],
+ pat:'Une tension élevée gêne le passage du sang vers le placenta : c’est pourquoi on surveille souvent, même sans symptôme. Signaler immédiatement un mal de tête qui ne cède pas, des moucherons devant les yeux ou une douleur en barre. Pas de pilule œstroprogestative dans les six semaines ; contraception non hormonale si la tension n’est pas stabilisée.'},
+
+{id:'R2',t:'Pré-éclampsie sévère, éclampsie, HELLP',cat:'Périnatal · Urgence vitale',
+ intro:'Pré-éclampsie sévère : HTA sévère et/ou atteinte viscérale. Éclampsie : crise convulsive tonicoclonique dans un contexte de pathologie hypertensive de la grossesse. HELLP : hémolyse (LDH > 600 UI/L), ASAT-ALAT ≥ 2N et plaquettes < 100 000/mm³.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Céphalées intenses résistantes au traitement','Troubles visuels ou auditifs persistants','Douleur épigastrique « en barre », hypochondre droit','Convulsions, confusion, déficit neurologique','Dyspnée, douleur thoracique, oligurie','Saignement noirâtre avec utérus hypertonique']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Scope : PA, FC, SpO2, conscience','Plaquettes, LDH, haptoglobine, schizocytes','ASAT-ALAT, bilirubine, créatinine (doublement ou > 90 µmol/L)','Protéinurie > 3 g/24 h, fibrinogène','ERCF, échographie, Doppler']},
+  {l:'Urgence — alerter sans délai',u:['Éclampsie : la perfusion de sulfate de magnésium est indiquée d’emblée','Toute HTA ≥ 180/120 mmHg','HELLP syndrome, hématome rétroplacentaire','Œdème aigu du poumon, insuffisance rénale aiguë','HTA sévère non contrôlée par 2 ou 3 antihypertenseurs']},
+  {l:'Surveiller et tracer',u:['Diurèse horaire, ROT, conscience, fréquence respiratoire','Plaquettes, LDH, transaminases deux fois par jour','RCF en continu, mouvements actifs','Heure et dose de chaque molécule administrée']}],
+ steps:['Débuter ou majorer le traitement : objectif PAS < 160 et PAD < 110 mmHg.',
+  'Signe de gravité : labétalol IVSE en première intention (bolus de 20, 40, 80 puis 80 mg), ou nicardipine, ou urapidil.',
+  'Sulfate de magnésium : 4 g en perfusion sur 20 min, puis 1 à 2 g/h pendant 24 h.',
+  'Surveiller les ROT, la conscience, la diurèse et la fréquence respiratoire ; gluconate de calcium en cas de surdosage.',
+  'Terminaison : après 34 SA si forme sévère ; entre 24 et 34 SA, poursuite sous surveillance rapprochée ; avant 24 SA, discuter une interruption pour sauvetage maternel.',
+  'Critères maternels de terminaison : éclampsie, OAP, HRP, HELLP, insuffisance rénale, HTA non contrôlée.',
+  'Envoyer le placenta en anatomopathologie ; pas d’œstroprogestatif pendant six semaines.'],
+ pat:'Le sulfate de magnésium protège du risque de convulsions ; il donne une sensation de chaleur et une lourdeur des jambes, ce n’est pas dangereux. La décision d’accoucher est une décision d’équipe : elle sera expliquée au fur et à mesure. Après l’accouchement, la tension reste surveillée plusieurs semaines.'},
+
+{id:'R3',t:'Métrorragies du troisième trimestre',cat:'Périnatal · Hémorragie',
+ intro:'Saignement survenant après 28 SA jusqu’à la naissance, à rapprocher dès 20 SA. Environ 5 % des grossesses. Le diagnostic différentiel essentiel oppose le placenta praevia et l’hématome rétroplacentaire (HRP).',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Saignement rouge, répété, indolore, utérus souple : évoquer un placenta praevia','Douleur, utérus hypertonique, saignement noirâtre : évoquer un HRP','Contexte d’HTA, de pré-éclampsie, d’ATCD d’HRP ou de traumatisme','Présentation haute ou vicieuse, BCF audibles (PP)','BCF absents ou irréguliers, état maternel contrastant avec un saignement minime (HRP)']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Constantes et recherche de signes de choc','Échographie : localisation du placenta, hématome, vitalité','ERCF','Groupe-RAI, NFS, TP-TCA, fibrinogène, D-Dimères','Créatinine, glycémie, ionogramme']},
+  {l:'Règle d’or et urgence',u:['Aucun toucher vaginal avant d’avoir éliminé un placenta praevia','Ne jamais faire de toucher vaginal avant l’échographie','Saignement abondant avec état de choc : extraction ou chirurgie urgente','Fœtus mort avec HRP sévère et troubles de la crase','Vasa praevia : césarienne en extrême urgence']},
+  {l:'Surveiller et tracer',u:['Quantification du saignement, TA, pouls, diurèse','BCF en continu','Hémostase et plaquettes','Tonus et hauteur utérine','Nouveau-né : pâleur, anémie']}],
+ steps:['Mettre en condition : deux voies de bon calibre, remplissage, oxygène, réchauffer la patiente.',
+  'Commander du sang, installer le monitoring maternel et fœtal, noter l’heure de début.',
+  'Échographie pour localiser le placenta ; prévenir le bloc et l’anesthésiste.',
+  'Choc ou saignement abondant : extraction ou césarienne urgente, réanimation en parallèle.',
+  'HRP sévère avec décès fœtal : rupture artificielle des membranes et Syntocinon ; césarienne si le travail ne progresse pas ou si la crase se dégrade.',
+  'Placenta praevia recouvrant : césarienne. Bord à plus de 2 cm de l’orifice interne chez une patiente stable : voie basse possible.',
+  'Vasa praevia : césarienne en extrême urgence.',
+  'Anti-D 300 µg si rhésus négatif ; surveiller la délivrance et le post-partum (hémorragie, coagulation).'],
+ pat:'On ne fait pas d’examen interne tant que l’on ne sait pas où est le placenta : c’est une précaution, pas un refus de s’occuper de vous. Si le saignement reprend à la maison, il faut revenir sans attendre, même la nuit. La césarienne sera décidée selon la position du placenta et l’état du bébé.'},
+
+{id:'R4',t:'Diabète et grossesse',cat:'Périnatal · Métabolique',
+ intro:'Diabète pré-gestationnel (type 1 ou 2, connu ou découvert pendant la grossesse, persistant après) ; diabète gestationnel apparu pendant la grossesse. L’insulinorésistance s’installe nettement à partir de 20 SA et fait augmenter les besoins en insuline.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['ATCD de diabète gestationnel ou de macrosomie','Âge ≥ 35 ans, IMC ≥ 25 kg/m²','Diabète de type 2 chez un apparenté du premier degré','Syndrome des ovaires polykystiques','Macrosomie, hydramnios, RCIU inexpliqué','Infections urinaires ou mycoses vaginales récidivantes']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Glycémie à jeun ; HGPO si facteurs de risque (au 6e mois)','HbA1c, ECBU, microalbuminurie','Fond d’œil, créatinine, TA à chaque trimestre','Échographie : 22-24 SA, 32-34 SA, puis 36-37 SA','Mouvements actifs et hauteur utérine à chaque consultation']},
+  {l:'Signes de déséquilibre',u:['Hypoglycémies répétées, cétonurie','Macrosomie (EPF > 4 250 g) ou hydramnios','RCIU ou pré-éclampsie surajoutés','HbA1c élevée, glycémies hors objectif malgré le traitement']},
+  {l:'Surveiller et tracer',u:['Carnet d’autosurveillance, observance, cétonurie','Croissance fœtale, LA, mouvements actifs','TA et protéinurie (pré-éclampsie)','Post-partum : glycémie du nouveau-né, alimentation, contraception']}],
+ steps:['Consultation préconceptionnelle : HbA1c < 6,5 %, acide folique 0,4 mg/j trois mois avant, aspirine 100-160 mg avant 16 SA.',
+  'Relais des antidiabétiques oraux par insuline ; concertation diabétologue, obstétricien, pédiatre et diététicien.',
+  'Autosurveillance glycémique : à jeun et 2 h après chaque repas ; objectifs < 0,95 g/L et < 1,20 g/L.',
+  'Ration ≥ 1 800 kcal (1 600 si obésité), trois repas et trois collations, 30 min d’exercice après chaque repas.',
+  'Surveillance : HbA1c tous les deux mois, ECBU et microalbuminurie mensuels, fond d’œil chaque trimestre.',
+  'Terme cible 39 SA ; déclenchement à 39 SA si diabète mal équilibré ou retentissement fœtal.',
+  'Césarienne programmée si EPF > 4 250 g (4 500 g selon les antécédents).',
+  'Si accouchement attendu avant 35 SA : bétaméthasone 12 mg × 2 et multiplication des glycémies.'],
+ pat:'Le sucre passe au bébé : c’est pour cela qu’on contrôle la croissance et qu’on évite les grosses variations. Une hypoglycémie se reconnaît à des sueurs, des tremblements, une faim brutale : il faut manger tout de suite et le noter. Après l’accouchement, un contrôle du sucre sera refait à distance pour vérifier que le diabète a disparu.'},
+
+{id:'R5',t:'Retard de croissance intra-utérin',cat:'Périnatal · Croissance',
+ intro:'Petit pour l’âge gestationnel (PAG) : estimation de poids fœtal ou poids de naissance < 10e percentile. RCIU : PAG avec arguments d’un mécanisme pathologique — inflexion ou arrêt de croissance, anomalies du bien-être fœtal, Doppler pathologique, oligoamnios.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Hauteur utérine en retard sur le terme, courbe qui s’infléchit','Poids maternel stagnant, tabac, conduites addictives','HTA, pré-éclampsie, diabète avec vasculopathie','ATCD de RCIU, de mort fœtale in utero ou de pré-éclampsie','Oligoamnios, anomalies du Doppler']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Datation certaine par la LCC entre 11 et 14 SA','Biométrie PC-PA-LF et estimation du poids fœtal (Hadlock)','Courbe adaptée à la population (OMS ou Intergrowth 21)','Doppler ombilical, cérébral, ductus venosus selon les résultats','Recherche étiologique : infections, malformations, anomalies chromosomiques']},
+  {l:'Extraction à discuter',u:['Diastole ombilicale nulle ou flux inverse','Vasodilatation cérébrale','RCF non oscillant < 5 bpm pendant plus de 40 min ou décélérations répétées','Onde « a » nulle ou inversée au ductus venosus']},
+  {l:'Surveiller et tracer',u:['Hauteur utérine et poids à chaque consultation','Croissance, liquide amniotique, Doppler','RCF et mouvements actifs','Poids de naissance, examen du placenta']}],
+ steps:['Confirmer la datation avant d’interpréter une biométrie.',
+  'Échographie de référence : biométrie, morphologie, liquide amniotique, Doppler ombilical.',
+  'Doppler ombilical normal : surveillance ambulatoire, Doppler tous les 2 à 3 semaines, RCF hebdomadaire.',
+  'Diastole réduite : ajouter le Doppler cérébral et le ductus venosus, rapprocher le RCF.',
+  'Diastole nulle ou reverse flow : hospitalisation, corticoïdes, RCF quotidien, Doppler veineux plurihebdomadaire.',
+  'Corticoïdes et sulfate de magnésium si naissance imminente avant 32-34 SA.',
+  'Extraction si RCF pathologique ou Doppler veineux pathologique ; terme discuté en équipe.',
+  'Prévenir le pédiatre et préparer la prise en charge néonatale.'],
+ pat:'Un bébé plus petit que prévu n’est pas forcément malade : on vérifie la croissance dans le temps, pas sur une seule mesure. Compter les mouvements chaque jour et consulter si le bébé bouge moins. Un monitoring régulier permet de choisir le meilleur moment pour naître.'}
+];
+
+CR.push(
+{id:'R6',t:'Menace d’accouchement prématuré',cat:'Périnatal · Prématurité',
+ intro:'Contractions utérines régulières et douloureuses associées à des modifications cervicales, avant 36 SA + 6 j, évoluant vers l’accouchement en l’absence de traitement. Les femmes peuvent être asymptomatiques.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Contractions régulières, douleur lombaire, pesanteur pelvienne','Écoulement, saignement, pertes inhabituelles','ATCD d’accouchement prématuré, conisation, utérus malformé','Grossesse multiple, placenta bas inséré','Contexte psycho-social ne permettant pas le repos']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Constantes, température, bandelette urinaire','Toucher vaginal et score de Baumgarten','Échographie endovaginale du col : < 25 mm, OI > 5 mm, protrusion > 5 mm','Tococardiographie 30 min dès 28 SA, avant le traitement','Prélèvement vaginal, ECBU, groupe-RAI, NFS-CRP, TP-TCA']},
+  {l:'Transfert in utero',u:['CU > 4/h avec modifications cervicales','Col court à l’échographie','Métrorragies avec placenta bas inséré','Fièvre ou suspicion d’infection : pas de tocolyse','Rupture des membranes associée']},
+  {l:'Surveiller et tracer',u:['Contractions par heure, BCF, température, écoulement','Col si point d’appel','NFS-CRP, prélèvements','Tolérance de la tocolyse : pouls, TA, dyspnée']}],
+ steps:['Pas de tocolyse en cas de suspicion d’infection materno-fœtale.',
+  'Antibiothérapie seulement en cas de doute infectieux : amoxicilline 1 g × 3/j per os 5 jours (clindamycine si allergie).',
+  'Corticothérapie avant 34 SA : bétaméthasone 12 mg × 2 à 24 h d’intervalle ; pas de deuxième cure systématique.',
+  'Tocolyse limitée à la durée de la corticothérapie, en l’absence d’infection.',
+  'Transfert in utero vers une maternité disposant d’une réanimation néonatale si terme très prématuré.',
+  'Sulfate de magnésium si accouchement imminent avant 32 SA (neuroprotection).',
+  'Prévenir l’équipe néonatale ; préparer le peau-à-peau et l’allaitement si l’état le permet.'],
+ pat:'Le but n’est pas d’arrêter le travail à tout prix, mais de gagner les 48 heures utiles aux poumons du bébé. Le traitement peut donner des palpitations et des bouffées de chaleur : il faut le signaler plutôt que le supporter. Repos relatif, hydratation, et revenir si les contractions se rapprochent.'},
+
+{id:'R7',t:'Rupture prématurée des membranes',cat:'Périnatal · Infection',
+ intro:'Ouverture de la poche des eaux sans entrée en travail, quel que soit le terme ; on parle de RPM avant terme avant 37 SA. Le risque principal est l’infection intra-utérine, d’autant plus grave que le terme est précoce.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Écoulement clair, incolore, indolore, continu ; parfois intermittent','Diminution de la hauteur utérine','Positions irrégulières du fœtus : risque de procidence du cordon','Fièvre, contractions douloureuses, liquide purulent : chorioamniotite']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Examen au spéculum stérile, non lubrifié (manœuvre de Tarnier)','Pas de toucher vaginal s’il n’y a pas de contractions','Tests IGFBP-1 ou PAMG-1 si doute','NFS-CRP, prélèvement vaginal, ECBU, hémocultures si fièvre','Échographie : liquide amniotique, présentation, placenta ; ERCF selon le terme']},
+  {l:'Chorioamniotite',u:['Fièvre > 38 °C avec au moins deux signes : utérus douloureux, LA purulent, tachycardie fœtale > 160','Procidence du cordon','Métrorragies associées','Contractions régulières installées']},
+  {l:'Surveiller et tracer',u:['Température trois fois par jour, pouls, contractions','Aspect et odeur du liquide','NFS-CRP hebdomadaire, ILA hebdomadaire','RCF, mouvements actifs','Noter l’heure de la rupture et l’aspect du liquide']}],
+ steps:['Avant 24 SA : information détaillée, discuter la poursuite de la grossesse, antibiothérapie à discuter, sortie à 48 h sans infection avec autosurveillance.',
+  '24 à 34 SA : hospitalisation, amoxicilline 1 g × 3/j per os (érythromycine si allergie), corticothérapie, tocolyse limitée à la cure ; pas de déclenchement avant 34 SA.',
+  '34 à 37 SA : pas de tocolyse, antibiothérapie, expectative jusqu’à 37 SA ; décerclage si indiqué.',
+  'À terme : bilan et prélèvement pour streptocoque B. Négatif : expectative jusqu’à 48 h. Positif : accoucher sans délai avec antibiothérapie.',
+  'Antibiothérapie per-partum selon le protocole (amoxicilline 1 g/8 h IV à partir de 12 h de RPM).',
+  'Pas de toucher vaginal répété : chaque geste ramène des germes vers l’utérus.',
+  'Prévenir le pédiatre ; surveiller le nouveau-né (température, alimentation, teint).'],
+ pat:'La poche peut se réparer partiellement : le liquide peut couler par moments et s’arrêter, cela ne veut pas dire que tout va bien. Prendre la température deux fois par jour et revenir pour toute fièvre, même modérée. Éviter les rapports et les bains jusqu’à l’accouchement.'},
+
+{id:'R8',t:'Grossesse prolongée',cat:'Périnatal · Terme',
+ intro:'Grossesse prolongée au-delà de 41 SA + 0 j ; terme dépassé à partir de 42 SA + 0 j. Le risque de mortalité périnatale augmente, avec oligoamnios, anomalies du rythme, émission méconiale et macrosomie.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Terme calculé par la LCC entre 11 et 14 SA, ou DDR fiable','Aucun signe de travail après 41 SA','Diminution des mouvements actifs','Hauteur utérine stable ou en baisse','Contractions irrégulières, faux travail']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Vérifier la datation : LCC, DDR, échographie du premier trimestre','Hauteur utérine, poids, TA, bandelette urinaire','RCF et mouvements actifs','Échographie : plus grande citerne, EPF, liquide amniotique','Score de Bishop si un déclenchement est envisagé']},
+  {l:'Signes d’alerte fœtale',u:['Diminution des mouvements actifs','RCF non rassurant','Plus grande citerne < 2 cm (oligoamnios)','Liquide méconial','Apparition d’une HTA ou d’une protéinurie']},
+  {l:'Surveiller et tracer',u:['Mouvements actifs, RCF, liquide amniotique','Contractions et progression du travail','Aspect du liquide à la rupture','Adaptation du nouveau-né : tonus, cri, coloration']}],
+ steps:['Vérifier la datation : c’est elle qui décide, pas l’impression clinique.',
+  'À partir de 41 SA : surveillance fœtale deux à trois fois par semaine (mouvements, RCF, échographie).',
+  'Plus grande citerne < 2 cm : envisager l’accouchement.',
+  'Ne pas utiliser le Doppler ni le score de Manning pour surveiller une grossesse prolongée.',
+  'Proposer un déclenchement à 41 SA selon le score de Bishop et le protocole du service.',
+  'Pendant le travail : monitorage continu, surveillance du liquide, présence pédiatrique.',
+  'Prévenir l’inhalation méconiale : aspiration douce, pas de désobstruction systématique.',
+  'Surveiller le post-partum : hémorragie, lésions périnéales, endométrite.'],
+ pat:'Le terme est une date, pas une urgence : on surveille de près et on décide ensemble du moment. Compter les mouvements chaque jour et venir si le bébé bouge moins. Un déclenchement est proposé parce que le placenta devient moins efficace après 41 semaines.'},
+
+{id:'R9',t:'Utérus cicatriciel',cat:'Obstétrique · Cicatrice',
+ intro:'Utérus portant une ou plusieurs cicatrices myométriales : césarienne le plus souvent, mais aussi myomectomie, perforation ou hystéroplastie. Grossesse à haut risque de rupture utérine pour la mère et le fœtus.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['ATCD de césarienne, de myomectomie, de perforation utérine','Délai inférieur à six mois depuis la césarienne','Présentation autre que le sommet','Placenta antérieur bas inséré : rechercher un placenta accreta','Douleur utérine, saignement, tachycardie pendant le travail']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Compte rendu opératoire : type d’incision, suites, indication','Échographie : épaisseur de la cicatrice, insertion placentaire','Recherche de placenta accreta si placenta praevia antérieur','Consultation d’anesthésie, groupe et RAI','Dossier obstétrical complet']},
+  {l:'Signes de pré-rupture',u:['Douleur utérine continue ou en coup de poignard','Métrorragies','Tachycardie maternelle, malaise','Anomalies du RCF, perte du tonus utérin']},
+  {l:'Surveiller et tracer',u:['Cicatrice : douleur, sensibilité','Contractions, RCF, saignement','TA et pouls maternels','Délivrance et post-partum']}],
+ steps:['Identifier la cicatrice : type d’incision et indication de la césarienne précédente.',
+  'Césarienne prophylactique si cicatrice corporéale, segmento-corporéale en T, plus d’une cicatrice, placenta bas inséré antérieur, indication permanente, utérus malformé, présentation non céphalique.',
+  'Épreuve de travail possible si : une seule cicatrice segmentaire, suites simples, pas de malformation, pas de surdistension, présentation céphalique, accord de la patiente, équipe et bloc disponibles.',
+  'Si déclenchement : ballon transcervical avec prudence, ocytociques prudents, prostaglandines proscrites.',
+  'Surveillance du travail : RCF permanent, tocographie, partogramme.',
+  'Dépister la pré-rupture : douleur, saignement, tachycardie.',
+  'Prévenir l’anesthésiste et le pédiatre ; salle de césarienne prête.',
+  'Post-partum : surveiller l’involution, le saignement et l’infection.'],
+ pat:'Une cicatrice solide peut supporter un accouchement par voie basse : c’est une épreuve surveillée, pas un risque pris à l’aveugle. Signaler toute douleur continue, tout saignement, tout vertige pendant le travail. Le bloc et l’anesthésiste sont prévenus à l’avance : c’est une sécurité, pas un présage.'},
+
+{id:'R10',t:'Fièvre et infection en cours de grossesse',cat:'Périnatal · Infection',
+ intro:'Toute fièvre ≥ 38 °C (ou < 36 °C avec frissons). Chorioamniotite ou infection intra-utérine : hyperthermie > 38 °C associée à au moins deux signes — utérus douloureux, liquide purulent, tachycardie fœtale > 160 bpm.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Fièvre, frissons, douleurs pelviennes','Écoulement de liquide, leucorrhées, prurit','Signes ORL, digestifs, urinaires ou neurologiques','Geste invasif récent : cerclage, amniocentèse, biopsie choriale','Tachycardie fœtale, diminution des mouvements']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Température confirmée à 1 ou 2 heures d’intervalle','NFS-CRP, hémocultures, ECBU, prélèvements vaginaux','Sérologies selon le contexte (toxoplasmose, CMV, rubéole)','Échographie et RCF','Recherche du foyer : ORL, urinaire, digestif, cutané']},
+  {l:'Urgence infectieuse',u:['Fièvre + contractions douloureuses + liquide purulent + tachycardie fœtale','Fièvre pendant le travail','Signes de choc : hypotension, marbrures, confusion','Épisode pseudo-grippal avec fromages non pasteurisés (listériose)']},
+  {l:'Surveiller et tracer',u:['Température toutes les 4 h, pouls, TA','RCF, contractions','Lochies, liquide amniotique','NFS-CRP, diurèse']}],
+ steps:['Confirmer la fièvre, chercher la cause, ne pas banaliser.',
+  'En travail : prélèvements puis antibiothérapie à large spectre ; extraction selon l’état maternel et fœtal.',
+  'Chorioamniotite : antibiothérapie IV, utérotoniques, extraction ; prévenir le pédiatre.',
+  'Pas de tocolyse en cas d’infection.',
+  'Antipyrétiques, réhydratation, surveillance rapprochée.',
+  'Adapter l’antibiothérapie à l’antibiogramme, réévaluer à 48 h.',
+  'Nouveau-né : prélèvements, surveillance, antibiothérapie si indiquée.',
+  'Tracer les heures de température et d’antibiotique.'],
+ pat:'Une fièvre n’est jamais banale pendant la grossesse : elle peut déclencher un travail prématuré. Prendre la température et noter l’heure avant de prendre un antipyrétique. Éviter les fromages au lait cru et les crudités pendant la grossesse.'},
+
+{id:'R11',t:'Anémie et grossesse',cat:'Périnatal · Hématologie',
+ intro:'Selon l’OMS : hémoglobine < 11 g/dL pendant la grossesse, < 10 g/dL en post-partum ; anémie sévère si < 8 g/dL. Une Hb maternelle < 9 g/dL augmente le risque d’accouchement prématuré, de RCIU et de mort fœtale in utero ; l’objectif est une Hb entre 9,5 et 11,5 g/dL.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Pâleur, tachycardie, vertiges, hypotension','Dyspnée d’effort puis de repos, céphalées','Fatigue inhabituelle, baisse des performances','Multiparité, grossesses rapprochées, contexte socio-économique difficile','Placenta praevia, saignement chronique']},
+  {l:'Vérifier — constantes, examen, bilan',u:['NFS, VGM, réticulocytes','Ferritine, coefficient de saturation','Électrophorèse de l’hémoglobine','Folates et vitamine B12','Recherche d’un saignement occulte']},
+  {l:'Anémie sévère ou mal tolérée',u:['Hb < 8 g/dL','Dyspnée de repos, tachycardie, hypotension','Drépanocytose ou thalassémie connue','Saignement actif associé']},
+  {l:'Surveiller et tracer',u:['Hb et tolérance clinique','Observance et effets digestifs du fer','Signes de décompensation','Nouveau-né : prématurité, poids de naissance']}],
+ steps:['Traiter toute carence, même modérée.',
+  'Fer oral 80 à 160 mg/j, à distance des repas, avec de la vitamine C.',
+  'Fer parentéral si échec, intolérance, malabsorption, anémie sévère ou correction rapide nécessaire : 200 à 300 mg, à renouveler selon les besoins.',
+  'Fer injectable contre-indiqué en cas d’hémoglobinopathie, d’atteinte hépatique ou de surcharge en fer.',
+  'Arrêter le fer oral pendant le traitement parentéral, le reprendre au 5e jour avec l’acide folique.',
+  'Transfusion si anémie sévère mal tolérée, ou en post-partum avec signes de choc.',
+  'Contrôler l’efficacité : NFS à 7-10 jours, ferritine après 4 semaines.',
+  'Prévenir l’hémorragie du post-partum : utérotoniques, information, surveillance.'],
+ pat:'Le fer se prend mieux à jeun, avec un jus d’agrume, et loin du thé et du café. Les selles noires sont normales avec le fer : ce n’est pas du sang. Une anémie corrigée diminue le risque d’accouchement prématuré et de saignement mal toléré.'}
+);
+
+CR.push(
+{id:'R12',t:'Hémorragie du post-partum',cat:'Natal · Hémorragie',
+ intro:'Perte sanguine ≥ 1 000 mL ou perte accompagnée de signes d’hypovolémie dans les 24 h suivant l’accouchement, quel que soit le mode (protocole national). En pratique, toute perte supérieure à 500 mL ou mal tolérée doit déclencher la même réponse immédiate.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Saignement abondant, caillots, utérus mou et mal rétracté','Pâleur, sueurs, tachycardie, hypotension, angoisse','Atonie utérine (70 %), rétention placentaire, traumatisme de la filière, coagulopathie','Facteurs de risque : travail prolongé, ocytociques, chorioamniotite, multiparité, surdistension','Situation à risque de coagulopathie : pré-éclampsie, HRP, MFIU, sepsis']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Quantifier : sac de recueil ou pesée, jamais l’impression','TA, pouls, saturation, conscience, temps de recoloration','Utérus (tonus, hauteur), vessie, filière génitale','NFS, TP-TCA, fibrinogène, groupe (deuxième détermination)','Index de choc : fréquence cardiaque / PAS']},
+  {l:'Alerter immédiatement',u:['Heure de début + appel de toute l’équipe','Signes de choc hémorragique : transfusion et bloc','Utérus non rétracté malgré les utérotoniques','Saignement persistant après révision et sutures','Troubles de la coagulation']},
+  {l:'Surveiller et tracer',u:['Saignement, TA, pouls, diurèse horaire','Plaquettes, fibrinogène, Hb','Tonus utérin et hauteur','Coloration, conscience, température']}],
+ steps:['Phase 1 — appeler, noter l’heure, ouvrir la feuille de surveillance, prévenir obstétricien, anesthésiste, sage-femme, infirmier.',
+  'Bilan de référence et commande de produits sanguins ; deuxième voie 16-18 G ; monitorage PA-FC-SatO2 ; oxygène 8 L/min ; réchauffer.',
+  'Ocytocine 5 à 10 UI en IVD lente puis 5 à 10 UI/h (sans dépasser 40 UI) ; acide tranexamique 1 g ; cristalloïdes.',
+  'Révision utérine, massage, valves et suture des lésions, sonde vésicale à demeure ; antibioprophylaxie si geste endo-utérin.',
+  'Phase 2 — CGR, plasma frais congelé, plaquettes ; fibrinogène 3 g (cible > 2 g/L) ; calcium 1 g ; deuxième dose d’acide tranexamique.',
+  'Compression bimanuelle, compression aortique, ballon de tamponnement ; vasoconstricteurs si état de choc.',
+  'Phase 3 — chirurgie conservatrice ou radicale, embolisation si patiente stabilisée, facteur VIIa en dernier recours.',
+  'Tracer heure par heure ; informer la patiente à chaque étape ; installer le nouveau-né au sein ou au chaud.'],
+ pat:'On quantifie le saignement pour agir vite : ce n’est pas un contrôle, c’est un soin. Ce qui est fait à chaque étape vous sera expliqué : dites-nous si vous vous sentez partir. Le bébé reste contre vous ou au chaud, et la mise au sein sera aidée dès que possible.'},
+
+{id:'R13',t:'Complications du post-partum',cat:'Post-natal · Suites de couches',
+ intro:'Le post-partum s’étend sur six semaines. Les complications sont hémorragiques (précoces ou tardives), infectieuses (endométrite), thrombo-emboliques et psychiatriques. L’endométrite est la première cause de fièvre du post-partum, souvent entre le 3e et le 5e jour.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Fièvre 38,5 à 40 °C, pouls accéléré, altération de l’état général','Douleurs pelviennes, utérus mou et sensible à la mobilisation','Lochies fétides, parfois hémorragiques','Saignement tardif : après 24 h et jusqu’à 12 semaines','Douleur du mollet, dyspnée, douleur thoracique','Tristesse, insomnie, ambivalence, culpabilité']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Température, pouls, TA, examen des membres inférieurs','Examen de l’utérus, des lochies, du périnée et de la cicatrice','Prélèvements de lochies, hémocultures si fièvre > 38,5 °C, ECBU','NFS-CRP, échographie pelvienne','EPDS si doute sur l’humeur ; recherche de signes de thrombose']},
+  {l:'Urgences selon le tableau',u:['Sepsis : hypotension, marbrures, confusion','Thrombophlébite pelvienne ou embolie pulmonaire','Hémorragie tardive abondante','Utérus nécrotique','Idées suicidaires ou infanticides']},
+  {l:'Surveiller et tracer',u:['Température, lochies, involution utérine','Douleur, mobilité, signes respiratoires','Humeur, sommeil, lien au bébé','Alimentation et état du nouveau-né']}],
+ steps:['Endométrite : prélèvements puis antibiothérapie IV à large spectre (clindamycine 900 mg/8 h + gentamicine 3 mg/kg/j, ou amoxicilline-acide clavulanique 1 g/8 h, ou céphalosporine de 3e génération).',
+  'Utérotoniques indispensables (ocytocine, misoprostol) pour assurer l’écoulement des lochies.',
+  'Réévaluer à 48 h ; poursuivre jusqu’à 24-48 h d’apyrexie ; relais per os 7 à 10 jours si bactériémie ; métronidazole si persistance.',
+  'Échec à 5 jours : TDM ou IRM à la recherche d’une thrombophlébite pelvienne, puis anticoagulation.',
+  'Utérus nécrotique et septique : hystérectomie subtotale avec antibiothérapie.',
+  'Hémorragie tardive : chercher une endométrite ; retour de couches hémorragique : œstrogènes en l’absence de contre-indication.',
+  'Thrombo-embolie : alerter, anticoaguler selon le protocole.',
+  'Dépression du post-partum : écouter, coter l’EPDS, orienter, organiser le relais.'],
+ pat:'Une fièvre après l’accouchement n’est jamais normale : il faut consulter le jour même. Une tristesse qui dure, une impossibilité à dormir ou à s’occuper du bébé se soignent : en parler n’est pas une plainte. Une douleur du mollet ou un essoufflement impose un avis urgent.'},
+
+{id:'R14',t:'Dystocie des épaules',cat:'Natal · Expulsion',
+ intro:'Absence de dégagement des épaules après l’expulsion de la tête, qui impose d’autres manœuvres que la traction douce ou la restitution. Fausse dystocie : seule l’épaule antérieure est retenue. Vraie dystocie : les deux épaules sont au-dessus du détroit supérieur. Urgence non prévisible.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Tête dégagée, épaules qui ne se dégagent pas malgré une traction douce','Fausse dystocie : épaule postérieure dans l’excavation, antérieure retenue','Vraie dystocie : les deux épaules au-dessus du détroit supérieur','Antécédent de dystocie des épaules, macrosomie fœtale','Diabète maternel, obésité maternelle','Travail long, stagnation de la dilatation, extraction instrumentale']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Noter l’heure du dégagement de la tête','Patiente bien installée en position gynécologique','Épaule postérieure engagée ou non : elle guide la manœuvre','Côté du dos fœtal (main de l’opérateur pour Jacquemier)','Épisiotomie déjà faite ou non','Une 3e personne présente si possible']},
+  {l:'Alerter sans délai',u:['Demander de l’aide, si possible une 3e personne','Échec de McRoberts : appeler l’anesthésiste et le pédiatre','Échec des manœuvres : épisiotomie, puis tout refaire dans le même ordre','Manœuvres invasives (Zavanelli, symphyséotomie, cléidotomie, laparotomie) : dernier recours, médecin','Rester calme, annoncer ce que l’on fait']},
+  {l:'Surveiller et tracer',u:['Heure de la tête et heure du corps','Manœuvres faites, dans quel ordre, de quel côté','Examen de l’enfant par le pédiatre','Explications claires aux parents']}],
+ steps:['Demander de l’aide, installer la patiente en position gynécologique, garder son calme.',
+  'Ne pas tirer de façon excessive sur la tête (ni vers le bas, ni latéralement), pas d’expression utérine, pas de rotations intempestives.',
+  'McRoberts : hyperflexion bilatérale des cuisses ± pression sus-pubienne ; traction dans l’axe ombilicococcygien.',
+  'Si échec : appeler l’anesthésiste et le pédiatre.',
+  'Épaule postérieure engagée : Wood inversée (rotation de 180°). Non engagée : Jacquemier (abaissement du bras postérieur, main du côté du dos fœtal).',
+  'Si échec : épisiotomie si elle n’est pas faite, puis refaire les manœuvres dans le même ordre.',
+  'En dernier recours, par le médecin : Zavanelli, symphyséotomie, cléidotomie, laparotomie avec hystérotomie.',
+  'Dans tous les cas : examen de l’enfant par le pédiatre et explications claires aux parents.'],
+ pat:'C’est une urgence : la tête est née mais les épaules sont retenues. Plusieurs personnes vont venir et on vous demandera de bouger les jambes ou de ne plus pousser. Chaque geste vous sera annoncé. Après la naissance, le pédiatre examinera votre bébé et l’équipe vous expliquera ce qui s’est passé.'},
+
+{id:'R15',t:'Réanimation du nouveau-né en salle de naissance',cat:'Natal · Néonatal',
+ intro:'Environ 6 à 10 % des nouveau-nés ont besoin d’une assistance à la naissance et 1 % d’une réanimation réelle (ILCOR 2020). Les situations à risque ne sont pas toujours prévisibles : à chaque naissance, une personne capable de ventiler au masque doit être présente.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Prématuré ?','Absence de respiration spontanée, absence de cri franc','Hypotonie','Apnée ou gasp','Fréquence cardiaque < 100 / min','Difficultés respiratoires ou cyanose persistante']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Matériel vérifié avant chaque naissance','Salle à 26-28 °C, table préchauffée, langes chauffés, bonnet','Rôles répartis, équipe briefée','Facteurs de risque : RPM, saignement du 3e trimestre, HTA sévère, diabète, liquide méconial, ARCF','Prématurité < 35 SA, grossesse multiple, RCIU, procidence du cordon','Contact établi avec les soins intensifs néonatals']},
+  {l:'Alerter, réanimer',u:['Apnée ou FC < 100 / min : ventilation au masque, idéalement dans les 60 s','FC < 60 / min après 30 s de ventilation efficace : compressions thoraciques','FC < 60 / min malgré 60 s de compressions : adrénaline','Pâleur, pouls faibles, bradycardie : suspecter une hypovolémie','Appeler le pédiatre dès que le risque est identifié']},
+  {l:'Surveiller et tracer',u:['FC : auscultation, puis oxymétrie, puis ECG','SpO2 préductale cible : 60 % à 2 min, 70 % à 3, 80 % à 4, 85 % à 5, 90 % à 10 min','Température entre 36,5 et 37,5 °C','Réévaluation toutes les 30 s ; toutes les minutes après adrénaline','Heure de chaque geste, tracée immédiatement']}],
+ steps:['Anticiper : matériel, rôles, normothermie. Clampage du cordon après plus de 30 s si aucune réanimation n’est nécessaire (terme, ou prématuré > 28 SA).',
+  'Bonne adaptation : peau à peau, soins de routine, surveillance de la respiration, du tonus et de la coloration.',
+  'Phase A : sécher, stimuler, tenir au chaud, positionner pour ouvrir les voies aériennes. Pas d’aspiration d’un bébé vigoureux, même si le liquide est méconial.',
+  'Phase B : ventilation au masque (FiO2 21 %, 40-60 / min, insufflation ≥ 1 s, pression max 30 cmH2O à terme, 20-25 chez le prématuré). Évaluer après 30 s.',
+  'Phase C : si FC < 60 / min après 30 s de ventilation efficace, compressions 3 pour 1 ventilation (90 + 30 par minute), intubation, O2 à 100 %.',
+  'Phase D : si FC < 60 / min malgré 60 s, adrénaline IV 10 à 30 µg/kg (0,1 à 0,3 mL/kg, 1 mL + 9 mL de NaCl 0,9 %), toutes les 3 à 5 min, voie ombilicale de préférence.',
+  'En attendant la voie ombilicale : voie endotrachéale 50 à 100 µg/kg. Hypovolémie : NaCl 0,9 % ou sang, 10 à 20 mL/kg en 5 à 10 min.',
+  'Soins post-réanimation, préparation du transfert néonatal, traçage heure par heure.'],
+ pat:'Si votre bébé a besoin d’aide pour respirer, c’est fréquent et l’équipe est prête. Nous restons à côté de vous et nous vous disons ce qui se passe. Dès que son état le permet, il revient contre vous, au chaud.'},
+
+{id:'R16',t:'Déchirures périnéales',cat:'Natal · Périnée',
+ intro:'Les déchirures sont recherchées après chaque accouchement, y compris l’examen de la paroi rectale. Classification RCOG-OMS : 1er degré (épithélium vaginal ou vulvaire), 2e (muscles du périnée), 3e a (< 50 % du sphincter externe), 3e b (> 50 %), 3e c (sphincter interne), 4e (muqueuse rectale).',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Examiner le périnée juste après chaque accouchement','Examen de la paroi rectale systématique','Vagin : plaie de l’anneau vulvaire vers l’épine sciatique, souvent postérieure','Col : déchirure à rechercher à l’exposition aux valves','Vulve : déchirure antérieure vers le méat ou le clitoris, saigne beaucoup','Un doute sur une lésion du sphincter : demander un second avis']},
+  {l:'Vérifier — constantes, examen, bilan',u:['Inventaire complet : face antérieure du vagin, col, cloison recto-vaginale, périnée','Sonde vésicale : des urines sanglantes évoquent une plaie vésicale','Analgésie ou anesthésie suffisante','Bonne installation, aide, éclairage, valves, tampon dans le fond vaginal','Fils résorbables (0 ou 2-0)','Degré noté selon la classification RCOG-OMS']},
+  {l:'Avis médical',u:['Lésion du sphincter anal (3e ou 4e degré) ou doute','Déchirure du col dont la limite supérieure n’est pas visible','Déchirure vaginale avec suspicion de rupture utérine : laparotomie','Urines sanglantes : plaie vésicale','Saignement qui persiste après suture']},
+  {l:'Surveiller et tracer',u:['Description détaillée des lésions, du degré et de la réparation','Reprise de la miction (rétention plus fréquente)','Douleur : antalgiques niveau 1 ou 2, AINS','Transit : laxatifs systématiques','Soins locaux : toilette à l’eau, bains de siège']}],
+ steps:['Rechercher les déchirures après chaque accouchement, les classer et les décrire.',
+  'Installer la patiente : analgésie, éclairage, aide, valves, tampon vaginal.',
+  'Lésion du sphincter : une dose de métronidazole IV ; une céphalosporine de 2e génération IV peut s’y associer.',
+  'Réparer de haut en bas, en reconstituant les plans anatomiques ; fil résorbable 0 ou 2-0.',
+  '1er et 2e degrés : surjet continu si plaie linéaire ; plans séparés avec repères si plaie irrégulière. Sphincter : repérer chaque chef, point en U à résorption lente.',
+  '3e et 4e degrés (médecin) : sphincter externe en paletot ou bout à bout ; muqueuse rectale en points séparés ou surjet, de l’angle supérieur vers la marge anale. Peut être différée de quelques heures.',
+  'Vaginales : bord à bord en partant du haut. Cervicales : pinces en cœur. Vulvaires : points séparés, fil rapide, sonde près de l’urètre.',
+  'Suites : antalgiques, soins locaux, laxatifs, surveillance de la miction ; tout tracer.'],
+ pat:'Une douleur du périnée est attendue : elle se soigne, dites-le. Toilette à l’eau avec un savon doux, bains de siège, laxatifs pour éviter la constipation. Signalez une difficulté à uriner ou toute gêne pour retenir les selles ou les gaz.'},
+
+{id:'R17',t:'Mort fœtale in utero',cat:'Périnatal · Deuil',
+ intro:'Décès fœtal survenant avant la mise en travail, après 22 SA ou pour un poids de naissance supérieur à 500 g. Le diagnostic est échographique. L’annonce et l’accompagnement des parents font partie du soin.',
+ rg:[
+  {l:'Reconnaître — ce que je vois, ce qu’on me dit',u:['Absence d’activité cardiaque fœtale à l’échographie','Céphalées, œdèmes, prurit d’apparition récente','Épisode fébrile récent','Antécédent d’HTA, de diabète, de cardiopathie','Chute ou traumatisme dans les jours précédents','Antécédent de fausses couches répétées ou de mort fœtale']},
+  {l:'Vérifier — constantes, examen, bilan',u:['TA, prise de poids, œdèmes','NFS, hémostase, CRP, groupe, RAI, test de Kleihauer','Sérologies : parvovirus B19, toxoplasmose, VDRL-TPHA','Glycémie à jeun, TSH-T4, bilan SAPL','Prélèvements cervico-vaginaux, ECBU si besoin','Consultation d’anesthésie et bilan pré-opératoire']},
+  {l:'Pronostic maternel en jeu',u:['HRP ou éclampsie','Chorioamniotite avec fièvre','Troubles de l’hémostase','Déclenchement immédiat, voire césarienne selon l’urgence','Présentation transversale proche du terme : césarienne']},
+  {l:'Surveiller et tracer',u:['État psychologique de la patiente et du couple','Fièvre, signes d’infection, hémostase','Rétention placentaire fréquente (placenta friable)','Prélèvements après l’expulsion, tracés et étiquetés','Prévention de l’immunisation rhésus si incompatibilité']}],
+ steps:['Confirmer à l’échographie ; l’annonce est faite par la sage-femme ou le médecin, dans un lieu calme.',
+  'L’hospitalisation dépend de l’état psychologique et du tableau clinique : elle n’est pas obligatoire le jour du diagnostic.',
+  'Bilan maternel avant l’accouchement, consultation d’anesthésie, proposition d’une prise en charge psychologique.',
+  'Expliquer le devenir du corps, la déclaration, la fœtopathologie ; autopsie avec l’accord des parents (sinon examen externe et IRM).',
+  'Déclenchement selon les conditions locales. Respecter la poche des eaux. Avant dilatation complète, pas de manœuvres intempestives : antispasmodiques ou ocytociques si besoin.',
+  'Délivrance artificielle puis révision utérine (rétention de caduque fréquente).',
+  'Après l’expulsion : inspecter, prélever (membranes, placenta, cordon, orifices fœtaux), histologie placentaire, cytogénétique. Proposer aux parents de voir l’enfant, sans jamais l’imposer ; des photos si refus.',
+  'Post-partum : anti-D si besoin, inhibition de la lactation (cabergoline, 2 cp si > 17 SA), contraception, rendez-vous post-natal pour les résultats. Congé de maternité acquis dès 22 SA.'],
+ pat:'Nous sommes désolés. Prenez le temps qu’il faut : rien ne presse. Vous pourrez voir votre enfant si vous le souhaitez, ou avoir des photos. Les examens nous aideront peut-être à comprendre ; vous aurez les résultats à la consultation post-natale.'}
+);
+
+/* ---------------- CARTE DE TRI & RÉFLEXES ---------------- */
+const TRI=[
+{l:'01 · Pendant la grossesse',head:['Ce qui alerte','Ce que je fais d’abord','Où, et dans quel délai'],rows:[
+ ['Saignement vaginal, douleur pelvienne','Aucun toucher vaginal avant l’échographie ; constantes ; voies veineuses si abondant','Urgences obstétricales — immédiat'],
+ ['Contractions avant 37 SA, pertes de liquide','Heure de début, fréquence ; pas de TV si rupture suspectée ; tocographie dès 28 SA','Maternité — dans l’heure'],
+ ['TA ≥ 140/90, céphalées, troubles visuels, barre épigastrique','TA recontrôlée, bandelette urinaire, peser le signe neurologique','Avis médical immédiat ; HTA sévère = urgence'],
+ ['Fièvre ≥ 38 °C','Température confirmée, foyers, RCF, BU, NFS-CRP','Avis le jour même ; fièvre en travail = urgence'],
+ ['Diminution des mouvements fœtaux','Interrogatoire, auscultation, ERCF','Maternité — le jour même'],
+ ['Vomissements, ictère, prurit intense','Bilan hépatique, transaminases, bile','Avis médical rapide']]},
+{l:'02 · Pendant le travail',head:['Ce qui alerte','Ce que je fais d’abord','Où, et dans quel délai'],rows:[
+ ['Rythme cardiaque fœtal anormal ou plat','Changer de position, arrêter l’ocytocine, réévaluer','Alerte immédiate'],
+ ['Liquide méconial épais','Noter l’heure et l’aspect, préparer l’aspiration','Alerte immédiate'],
+ ['Métrorragies, douleur utérine continue','Suspicion de rupture ou d’HRP : arrêt de l’ocytocine, alerte','Bloc — immédiat'],
+ ['Hyperthermie, liquide purulent, tachycardie fœtale','Suspicion de chorioamniotite : prélèvements, antibiothérapie','Alerte immédiate'],
+ ['Arrêt de la progression, envie de pousser avant dilatation complète','Recontrôler, décrire précisément, ne pas faire pousser','Avis médical'],
+ ['Hémorragie après la délivrance','Heure, quantification, massage, utérotonique','Alerte immédiate (fiche R12)']]},
+{l:'03 · Après l’accouchement, et chez le nouveau-né',head:['Ce qui alerte','Ce que je fais d’abord','Où, et dans quel délai'],rows:[
+ ['Saignement abondant, caillots, utérus mou','Heure, quantification, massage, 2e voie, utérotonique','Alerte immédiate'],
+ ['Fièvre, lochies fétides, douleur pelvienne','Examen, prélèvements, NFS-CRP','Avis le jour même (fiche R13)'],
+ ['Douleur du mollet, dyspnée, douleur thoracique','Signes thrombo-emboliques : ne pas masser, alerter','Urgence'],
+ ['Tristesse persistante, insomnie, ambivalence','Écouter, coter l’EPDS, orienter','Relais organisé'],
+ ['Nouveau-né hypotonique, geignard, refus de boire, ictère intense','Température, glycémie, coloration, alimentation','Avis pédiatrique immédiat']]}
+];
+const GESTES=[
+ ['Nommer et appeler','Dire à voix haute ce que l’on constate, l’heure, et demander de l’aide par la personne et non « quelqu’un ».'],
+ ['Prendre les constantes','TA, pouls, température, saturation, conscience : un chiffre se transmet, une impression ne se transmet pas.'],
+ ['Installer','Deux voies veineuses de bon calibre, oxygène, réchauffer, sonde si besoin — selon la situation et le protocole.'],
+ ['Prélever et anticiper','Groupe, RAI, NFS, hémostase ; prévenir le laboratoire et la banque de sang avant que l’on en ait besoin.'],
+ ['Tracer et transmettre','Heure par heure : ce qui a été fait, par qui, avec quel effet. La relève ne peut pas deviner.']
+];
+const PHONE='« Je suis sage-femme étudiante en salle de naissance. Patiente de 31 ans, G3P2, 36 SA + 2, admise il y a une heure. Depuis dix minutes : TA 165/110, céphalées frontales, protéinurie 2+. BCF 150, contractions toutes les 4 minutes. J’ai installé une voie veineuse, prévenu l’anesthésiste et le laboratoire. Je vous attends. »';
+
+const ABR=[['SA','Semaines d’aménorrhée'],['DDR','Date des dernières règles'],['DPA','Date prévue d’accouchement'],['HU','Hauteur utérine'],['BCF / RCF','Bruits du cœur fœtal, rythme cardiaque fœtal'],['TV','Toucher vaginal'],['RPM','Rupture prématurée des membranes'],['PDE','Perte des eaux'],['HPP','Hémorragie du post-partum'],['HRP','Hématome rétroplacentaire'],['PPN','Placenta praevia'],['RCIU','Retard de croissance intra-utérin'],['MFIU','Mort fœtale in utero'],['GEU','Grossesse extra-utérine'],['IMG','Interruption médicale de grossesse'],['IVG','Intervention volontaire de grossesse'],['DIU','Dispositif intra-utérin'],['EPDS','Échelle de dépression du post-partum'],['EVA','Échelle visuelle analogique'],['MAP','Menace d’accouchement prématuré'],['APD','Analgésie péridurale'],['VVP','Voie veineuse périphérique'],['BU','Bandelette urinaire'],['NFS','Numération formule sanguine'],['RAI','Recherche d’anticorps irréguliers'],['ECBU','Examen cytobactériologique des urines'],['PMI','Protection maternelle et infantile'],['SMI','Santé maternelle et infantile'],['AG','Anesthésie générale'],['J1, J2…','Jour de vie ou jour du post-partum'],['HELLP','Hémolyse, cytolyse, thrombopénie'],['EPF','Estimation du poids fœtal'],['ILA','Index de liquide amniotique'],['OI','Orifice interne du col'],['ROT','Réflexes ostéotendineux'],['CGR','Concentré de globules rouges'],['PSL','Produits sanguins labiles'],['PFC','Plasma frais congelé'],['GATPA','Gestion active de la troisième phase'],['SI','Index de choc'],['ASG','Autosurveillance glycémique'],['ATCD','Antécédents'],['HGPO','Hyperglycémie provoquée par voie orale'],['SA + j','Terme en semaines plus jours']];
+
+const VALEURS_M=[['Tension artérielle','< 140 / 90 mmHg'],['HTA sévère','≥ 160 / 110 mmHg'],['Pouls','60-100 / min'],['Température','< 38 °C'],['Fréquence respiratoire','12-20 / min'],['Hémoglobine','11-15 g/dL (variable)'],['Plaquettes','150 000-400 000 / mm³'],['Protéinurie','Absente à la bandelette'],['Perte sanguine à l’accouchement','Environ 500 mL (voie basse)']];
+const VALEURS_N=[['Poids de naissance','2 500-4 000 g'],['Taille','46-54 cm'],['Périmètre crânien','33-37 cm'],['Température','36,5-37,5 °C'],['Fréquence cardiaque','110-160 / min'],['Fréquence respiratoire','40-60 / min'],['Premières urines','Dans les 24 heures'],['Premier méconium','Dans les 48 heures']];
+const CAL=[['1re consultation','Dès le début de la grossesse : confirmation, datation, examen, bilan initial.'],['2e consultation','Avant 15 SA : déclaration, certificat, échographie du 1er trimestre.'],['4e au 8e mois','Une consultation par mois : poids, TA, HU, BCF, présentation, bandelette urinaire.'],['Échographies','11-13 SA + 6 j · 20-24 SA · 30-35 SA.'],['6e mois','HGPO si facteurs de risque ; prévention de l’allo-immunisation RhD.'],['8e mois','Vitamine D 100 000 UI ; consultation pré-anesthésique.'],['9e mois','Pronostic obstétrical, lieu de naissance, prélèvement pour le streptocoque B.'],['Post-partum','Visite dans les 8 semaines : examen, frottis si besoin, contraception, EPDS.']];
+const MEDS=[['Ocytocine','Déclenchement, renforcement, délivrance dirigée','5 à 10 UI en IVD lente, puis 5 à 10 UI/h — ne pas dépasser 40 UI','CU, RCF, hypercinésie ; jamais en bolus rapide'],['Sulfate de magnésium','Pré-éclampsie sévère, éclampsie, neuroprotection','4 g sur 20 min, puis 1 à 2 g/h sur 24 h','ROT, diurèse, FR, conscience ; gluconate de calcium'],['Bêtaméthasone','Maturation pulmonaire avant 34 SA','12 mg × 2 à 24 h d’intervalle','Glycémie chez la diabétique ; pas de 2e cure systématique'],['Acide tranexamique','Hémorragie du post-partum','1 g IV, 2e dose si saignement persistant','Administrer tôt, noter l’heure'],['Amoxicilline','RPM, MAP, antibioprophylaxie per-partum','1 g × 3/j per os ; 1 g/8 h IV en per-partum','Allergie ; adapter à l’antibiogramme'],['Clindamycine + gentamicine','Endométrite du post-partum','900 mg/8 h + 3 mg/kg/j','Fonction rénale, audiogramme si prolongé'],['Fibrinogène / calcium','HPP avec coagulopathie','Fibrinogène 3 g (cible > 2 g/L) ; calcium 1 g','Contrôle biologique répété'],['Immunoglobulines anti-D','Femme rhésus négatif','300 µg selon la situation','Vérifier le rhésus du nouveau-né et le test de Kleihauer'],['Fer','Anémie','80 à 160 mg/j per os ; fer IV si échec ou sévère','À jeun avec vitamine C ; selles noires normales']];
+const BILANS=[
+ {l:'01 · Premier trimestre — jusqu’à 15 SA',rows:[['Confirmer la grossesse et la dater','Interrogatoire, examen ; échographie de datation par la LCC entre 11 et 14 SA'],['Bilan initial','Groupe, rhésus, RAI · NFS-plaquettes · glycémie à jeun · ECBU'],['Sérologies','Toxoplasmose, rubéole, syphilis, hépatite B, VIH ; selon contexte : CMV, hépatite C'],['Frottis cervico-utérin','S’il date de plus de trois ans'],['Déclaration de grossesse','Certificat, ouverture des droits, orientation vers la maternité'],['Conseils et supplémentation','Acide folique 0,4 mg/j jusqu’à 12 SA · arrêt tabac et alcool · alimentation'],['Prévention ciblée','Aspirine 100-160 mg avant 16 SA si haut risque de pré-éclampsie']]},
+ {l:'02 · Deuxième trimestre — 16 à 28 SA',rows:[['Consultation mensuelle','Poids, TA, HU, BCF, bandelette urinaire à chaque fois'],['Échographie morphologique','20 à 24 SA : biométrie, morphologie, placenta, liquide'],['Dépistage du diabète gestationnel','HGPO au 6e mois si facteurs de risque'],['Prévention de l’allo-immunisation','Rhésus négatif : protocole du service (injection à 28 SA selon les équipes)'],['Vaccinations','Mise à jour du calendrier ; vaccination antitétanique selon le statut']]},
+ {l:'03 · Troisième trimestre — 29 SA à l’accouchement',rows:[['Consultation mensuelle puis rapprochée','HU, présentation à partir de 34 SA, mouvements actifs'],['Échographie de croissance','30 à 35 SA : biométrie, croissance, liquide, placenta'],['Bilan du 8e mois','NFS, recherche de diabète ou d’anémie selon contexte'],['Vitamine D','100 000 UI au 8e mois selon le protocole'],['Consultation pré-anesthésique','Avant 36 SA si facteur de risque ou césarienne prévisible'],['Prélèvement streptocoque B','Au 9e mois selon le protocole du service'],['Préparer la naissance','Projet de naissance, lieu d’accouchement, signes d’alerte expliqués']]}
+];
+
+/* ============================================================
+   ÉTAT & UTILITAIRES
+   ============================================================ */
+const KEY='sf.carnet.v2';
+const $=s=>document.querySelector(s);
+const $$=s=>Array.from(document.querySelectorAll(s));
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const todayISO=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const todayUTC=()=>{const d=new Date();return new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()))};
+const SC={};
+/* normalise les tableaux vides définis par n */
+CF.forEach(f=>f.b.forEach(b=>{if(b.k==='table'&&b.rows==null&&b.n!=null)b.rows=b.n}));
+let D={profil:{},data:{},done:{},seen:{},notes:[],ui:{}};
+
+function load(){
+ try{const r=localStorage.getItem(KEY);if(r)D=Object.assign(D,JSON.parse(r))}catch(e){}
+ D.profil=D.profil||{};D.data=D.data||{};D.done=D.done||{};D.seen=D.seen||{};D.ui=D.ui||{};
+ if(!Array.isArray(D.notes)||!D.notes.length)D.notes=[
+  {id:'n1',t:'Notes de garde',b:'',d:todayISO()},
+  {id:'n2',t:'Idées de mémoire',b:'',d:todayISO()}];
+ D.notes.forEach(n=>{
+  if(D.data['nt.'+n.id+'.t']==null)D.data['nt.'+n.id+'.t']=n.t||'';
+  if(D.data['nt.'+n.id+'.b']==null)D.data['nt.'+n.id+'.b']=n.b||'';
+ });
+}
+let sT;
+function save(delay){clearTimeout(sT);sT=setTimeout(()=>{persist();saved()},delay||450)}
+function quietSave(){clearTimeout(sT);sT=setTimeout(persist,700)}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){toast('Stockage indisponible — exportez une sauvegarde')}}
+function saved(){const t=$('#savetx');if(!t)return;t.textContent='Enregistré ✓';clearTimeout(saved._t);saved._t=setTimeout(()=>{t.textContent='Enregistré sur cet appareil'},1500)}
+let toastT;
+function toast(m){const el=$('#toast');if(!el)return;el.textContent=m;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('on'),2000)}
+function has(k){const v=D.data[k];if(v===true)return true;if(v===false||v==null||v==='')return false;return String(v).trim()!==''}
+function parseD(s){if(!s)return null;const p=s.split('-').map(Number);return p.length===3&&p[0]?new Date(Date.UTC(p[0],p[1]-1,p[2])):null}
+function fmtD(d){return d?d.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}):'—'}
+function addD(d,n){const x=new Date(d.getTime());x.setUTCDate(x.getUTCDate()+n);return x}
+function diffD(a,b){return Math.round((b.getTime()-a.getTime())/86400000)}
+
+/* colonnes éditables d'un tableau */
+function editableCols(b){
+ const n=b.cols.length,lead=Array.isArray(b.rows)?1:0,tail=b.tail?1:0;
+ const mid=(!b.tail&&b.sub)?1:0,extra=(!b.tail&&b.sub2)?1:0;
+ const start=lead+mid+extra,end=n-tail,out=[];
+ for(let c=start;c<end;c++)out.push(c);
+ return out;
+}
+function defKeys(f){
+ let tot=0,fill=0;
+ f.b.forEach((b,bi)=>{
+  if(b.k==='note'){tot++;if(has(f.id+'.n'+bi))fill++}
+  else if(b.k==='fields')b.f.forEach((d,fi)=>{tot++;if(has(f.id+'.f'+bi+'.'+fi))fill++});
+  else if(b.k==='checks')b.g.forEach((g,gi)=>{tot++;let any=false;g.o.forEach((o,oi)=>{if(has(f.id+'.c'+bi+'.'+gi+'.'+oi))any=true});if(any)fill++});
+  else if(b.k==='table'){const n=typeof b.rows==='number'?b.rows:b.rows.length,cols=editableCols(b);
+   for(let r=0;r<n;r++)cols.forEach(c=>{tot++;if(has(f.id+'.t'+bi+'.'+r+'.'+c))fill++})}
+  else if(b.k==='score'){b.items.forEach((it,ii)=>b.cols.forEach((c,ci)=>{tot++;if(has('s.'+b.id+'.'+ci+'.'+ii))fill++}))}
+  else if(b.k==='visa'){[0,1,2].forEach(v=>{tot++;if(has(f.id+'.v'+bi+'.'+v))fill++})}
+ });
+ return {tot,fill};
+}
+function fichePct(f){const s=defKeys(f);return s.tot?Math.round(s.fill/s.tot*100):0}
+
+/* ============================================================
+   CONSTRUCTION DES BLOCS
+   ============================================================ */
+function fldHTML(k,d){
+ if(d.t==='select')return '<select data-k="'+k+'"><option value="">—</option>'+d.o.map(o=>'<option>'+esc(o)+'</option>').join('')+'</select>';
+ const t=d.t||'text';
+ return '<input data-k="'+k+'" type="'+t+'"'+(d.ph?' placeholder="'+esc(d.ph)+'"':'')+'>';
+}
+function blockHTML(fid,b,bi){
+ let s='';
+ if(b.k==='sub')return '<div style="margin:34px 0 4px;padding-top:16px;border-top:1px solid var(--border)"><span style="font-family:var(--disp);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700">'+esc(b.h)+'</span></div>';
+ s+='<section class="sect">';
+ if(b.h){
+  let num='',title=b.h;
+  const m=b.h.match(/^(\d{2})\s*·\s*(.*)$/);
+  if(m){num=m[1];title=m[2]}
+  s+='<h2>'+(num?'<span class="num">'+esc(num)+'</span>':'')+'<span style="flex:1">'+esc(title)+'</span>'+(b.tip?'<span class="tip">'+esc(b.tip)+'</span>':'')+'</h2>';
+ }
+ if(b.hint)s+='<p class="hint">'+esc(b.hint)+'</p>';
+ if(b.k==='note'){
+  s+='<textarea class="ta" data-k="'+fid+'.n'+bi+'" rows="'+(b.rows||3)+'" placeholder="'+(b.ph||'Écrire ici…')+'"></textarea>';
+ }else if(b.k==='fields'){
+  s+='<div class="fg">'+b.f.map((d,fi)=>'<div class="ff" style="'+(d.w?'grid-column:span '+d.w:'')+'"><label>'+esc(d.l)+'</label>'+fldHTML(fid+'.f'+bi+'.'+fi,d)+'</div>').join('')+'</div>';
+ }else if(b.k==='checks'){
+  s+='<div class="chks">'+b.g.map((g,gi)=>'<div class="ckg">'+(g.l?'<div class="l">'+esc(g.l)+'</div>':'')+'<div class="cks">'+g.o.map((o,oi)=>'<label class="ck"><input type="checkbox" data-k="'+fid+'.c'+bi+'.'+gi+'.'+oi+'"><span>'+esc(o)+'</span></label>').join('')+'</div></div>').join('')+'</div>';
+ }else if(b.k==='table'){
+  const n=typeof b.rows==='number'?b.rows:b.rows.length,labelled=Array.isArray(b.rows);
+  const cols=editableCols(b),tailCol=b.tail?b.cols.length-1:-1;
+  s+='<div class="tw"><table class="gt"><thead><tr>'+b.cols.map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr></thead><tbody>';
+  for(let r=0;r<n;r++){
+   s+='<tr>';
+   b.cols.forEach((c,ci)=>{
+    if(labelled&&ci===0){s+='<td class="rl">'+esc(b.rows[r])+'</td>';return}
+    if(!b.tail&&b.sub&&ci===1){s+='<td class="rl" style="background:var(--surface2)">'+esc(b.sub[r]||'')+'</td>';return}
+    if(!b.tail&&b.sub2&&ci===2){s+='<td class="rl" style="background:var(--surface2)">'+esc(b.sub2[r]||'')+'</td>';return}
+    if(b.tail&&ci===tailCol){s+='<td class="rl" style="background:var(--surface2)">'+esc(b.sub?b.sub[r]||'':'')+'</td>';return}
+    if(!cols.includes(ci)){s+='<td class="rl"></td>';return}
+    const k=fid+'.t'+bi+'.'+r+'.'+ci;
+    if(b.selcol===ci&&b.sels){s+='<td class="ci"><select data-k="'+k+'"><option value="">—</option>'+b.sels.map(o=>'<option>'+esc(o)+'</option>').join('')+'</select></td>'}
+    else s+='<td class="ci"><input data-k="'+k+'"></td>';
+   });
+   s+='</tr>';
+  }
+  s+='</tbody></table></div>';
+ }else if(b.k==='static'){
+  if(b.p)s+='<p style="margin:0 0 10px;font-size:14px;line-height:1.6">'+esc(b.p)+'</p>';
+  if(b.ul)s+='<ul class="bul">'+b.ul.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+ }else if(b.k==='callout'){
+  s+='<div class="callout'+(b.warn?' warn':'')+'">';
+  if(b.p)s+='<div style="margin-bottom:6px">'+esc(b.p)+'</div>';
+  if(b.ul)s+='<ul>'+b.ul.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+  s+='</div>';
+ }else if(b.k==='steps'){
+  s+='<ol class="steps">'+b.s.map(x=>'<li><span>'+esc(x)+'</span></li>').join('')+'</ol>';
+ }else if(b.k==='score'){
+  SC[b.id]=b;
+  s+='<div class="sc" data-sc="'+b.id+'"><table class="gt"><thead><tr><th>Item</th>'+b.cols.map(c=>'<th style="text-align:right">'+esc(c.l)+'</th>').join('')+'</tr></thead><tbody>';
+  b.items.forEach((it,ii)=>{
+   s+='<tr><td class="it">'+esc(it.l)+'</td>';
+   b.cols.forEach((c,ci)=>{
+    const k='s.'+b.id+'.'+ci+'.'+ii;
+    s+='<td class="op"><select data-k="'+k+'"><option value="">—</option>'+it.o.map((o,oi)=>'<option value="'+oi+'">'+oi+' · '+esc(o)+'</option>').join('')+'</select></td>';
+   });
+   s+='</tr>';
+  });
+  s+='</tbody></table><div class="tot">Total<span id="sc-'+b.id+'"></span>'+(b.note?'<span class="vd">'+esc(b.note)+'</span>':'')+'</div></div>';
+ }else if(b.k==='visa'){
+  s+='<div class="visa"><div class="ff"><label>'+(b.lab1||'Visa de l’encadrant')+'</label><input data-k="'+fid+'.v'+bi+'.0"></div>'+
+     '<div class="ff"><label>Nom, prénom</label><input data-k="'+fid+'.v'+bi+'.1"></div>'+
+     '<div class="ff"><label>Date</label><input type="date" data-k="'+fid+'.v'+bi+'.2"></div></div>';
+ }
+ s+='</section>';
+ return s;
+}
+
+/* ============================================================
+   RENDU — FICHE CLINIQUE
+   ============================================================ */
+function hydrate(root){
+ root.querySelectorAll('[data-k]').forEach(el=>{
+  const v=D.data[el.getAttribute('data-k')];
+  if(el.type==='checkbox')el.checked=(v===true||v===1);
+  else if(v!=null&&v!=='')el.value=v;
+ });
+}
+function scoreTotals(){
+ $$('.sc').forEach(box=>{
+  const id=box.getAttribute('data-sc'),def=SC[id];if(!def)return;
+  const sums=def.cols.map((c,ci)=>{let t=null;def.items.forEach((it,ii)=>{const v=D.data['s.'+id+'.'+ci+'.'+ii];if(v!==undefined&&v!=='')t=(t||0)+Number(v)});return t});
+  const host=box.querySelector('.tot span[id]');
+  if(host)host.innerHTML=sums.map((v,i)=>'<span class="vl">'+esc(def.cols[i].l)+'</span><b>'+(v==null?'—':v)+'</b>').join('<span class="vs">·</span>');
+  const vd=box.querySelector('.vd');
+  if(vd&&def.interpret&&sums[0]!=null)vd.textContent=def.interpret(sums);
+ });
+}
+function ficheHead(f){
+ return '<div class="eb"><span>Fiche clinique n° '+esc(f.id)+'</span><span class="r">'+esc(f.s)+'</span></div>'+
+  '<h1 class="fh1">'+esc(f.t)+'</h1><div class="frule"></div>'+
+  '<p class="obj"><b>Objectif</b> — '+esc(f.o)+'</p>'+
+  '<div class="progmini noprint" style="max-width:230px;margin-top:16px"><div class="pt"><span>Remplissage</span><b id="fpct">0 %</b></div><div class="pbar"><i id="fbar"></i></div></div>';
+}
+function renderFiche(f){
+ let h='<article class="fiche">'+ficheHead(f);
+ f.b.forEach((b,bi)=>h+=blockHTML(f.id,b,bi));
+ h+='<div class="done-row noprint"><span class="lbl">Fiche relue avec l’encadrant et terminée</span><button class="sw'+(D.done[f.id]?' on':'')+'" data-done="'+f.id+'" aria-label="Marquer la fiche comme terminée"></button></div>';
+ h+='<p style="margin:26px 0 0;font-size:11px;letter-spacing:.5px;color:var(--muted)" class="noprint">Repères : Protocoles et procédures de prise en charge de la grossesse, de l’accouchement et de la période post-natale — Ministère de la Santé, DGSRH, éd. 2025. À confronter au protocole affiché dans le service.</p>';
+ h+='</article>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));scoreTotals();ficheProgress();
+}
+
+function renderRisque(r){
+ const st=D.seen[r.id]||{};
+ let h='<article class="fiche">';
+ h+='<div class="eb"><span>Fiche à risque · '+esc(r.id)+'</span><span class="r">'+esc(r.cat)+'</span></div>';
+ h+='<h1 class="fh1">'+esc(r.t)+'</h1><div class="frule"></div>';
+ h+='<p class="obj">'+esc(r.intro)+'</p>';
+ h+='<div class="riskgrid" style="margin-top:22px">'+r.rg.map(g=>'<div class="rcell"><div class="l">'+esc(g.l)+'</div><ul>'+g.u.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>').join('')+'</div>';
+ h+='<section class="sect"><h2><span class="num">→</span><span style="flex:1">Prise en charge — dans l’ordre</span></h2><ol class="steps">'+r.steps.map(x=>'<li><span>'+esc(x)+'</span></li>').join('')+'</ol></section>';
+ h+='<section class="sect"><h2><span class="num">✎</span><span style="flex:1">À expliquer à la patiente, en mots simples</span></h2><div class="callout" style="font-style:italic"><div>'+esc(r.pat)+'</div></div></section>';
+ h+='<section class="sect"><h2><span class="num">✚</span><span style="flex:1">Ma situation vécue</span></h2>';
+ h+='<div class="fg" style="margin-bottom:12px"><div class="ff"><label>Date de la rencontre</label><input type="date" data-k="r.'+r.id+'.date"></div><div class="ff"><label>Service / lieu</label><input data-k="r.'+r.id+'.svc" placeholder="Salle de naissance…"></div><div class="ff"><label>Visa de l’encadrant</label><input data-k="r.'+r.id+'.visa"></div></div>';
+ h+='<label class="ck" style="margin:6px 0 12px"><input type="checkbox" data-k="r.'+r.id+'.seen"><span style="font-weight:600">Situation rencontrée en situation réelle</span></label>';
+ h+='<textarea class="ta" data-k="r.'+r.id+'.note" rows="4" placeholder="Ce que j’ai vu, ce que j’ai fait, ce que je demanderais la prochaine fois…"></textarea></section>';
+ h+='<p style="margin:24px 0 0;font-size:11px;color:var(--muted)">D’après les Protocoles et procédures de prise en charge de la grossesse, de l’accouchement et de la période post-natale — Ministère de la Santé, DGSRH, éd. 2025. Les posologies et les seuils doivent être confrontés au protocole affiché dans le service.</p>';
+ h+='</article>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));
+}
+
+/* ============================================================
+   RENDU — COUVERTURE & SOMMAIRE
+   ============================================================ */
+function profilFields(){
+ const P=[['nom','Nom'],['prenom','Prénom'],['numero','Numéro d’étudiant'],['promo','Promotion / année d’études'],['etab','Établissement de rattachement'],['annee','Année universitaire']];
+ return P.map(p=>'<div class="pf"><label>'+p[1]+'</label><input data-k="p.'+p[0]+'" autocomplete="off"></div>').join('');
+}
+function renderHome(){
+ const st=CF.map(f=>({f,p:fichePct(f)}));
+ const started=st.filter(x=>x.p>0).length,finished=CF.filter(f=>D.done[f.id]).length;
+ const seen=CR.filter(r=>(D.seen[r.id]||{}).seen).length;
+ const last=CF.find(f=>f.id===D.ui.last);
+ let h='<section class="cover">';
+ h+='<div class="cvhead"><span>Institut de formation · Sciences maïeutiques</span><span class="sf">SF</span></div>';
+ h+='<h1 class="cvtitle">Carnet<i>de stage</i></h1><div class="cvrule"></div>';
+ h+='<div class="cvcat">Sage-femme</div>';
+ h+='<p class="cvsub">Pratique clinique — obstétrique, gynécologie, néonatologie et santé des femmes</p>';
+ h+='<div class="romans">';
+ [['I','Fiches cliniques','01 – 10','fiches'],['II','Situations à risque','R1 – R17','risques'],['III','Annexes','Scores, valeurs, vocabulaire','annexes'],['IV','Notes libres','Pages de travail','notes'],['V','Mémo clinique','Calculs, bilans, médicaments','memo']].forEach(function(x){
+  h+='<button data-go="'+x[3]+'"><b>'+x[0]+'</b><span>'+x[1]+'<br><em style="font-style:normal;opacity:.65">'+x[2]+'</em></span></button>';
+ });
+ h+='</div>';
+ h+='<div class="prof">'+profilFields()+'</div>';
+ h+='<div class="cvfoot"><span>Document nominatif</span><span>Usage professionnel</span></div>';
+ h+='</section>';
+
+ h+='<div class="stats">';
+ h+='<div class="stat"><b>'+started+'/10</b><span>Fiches commencées</span></div>';
+ h+='<div class="stat"><b>'+finished+'/10</b><span>Fiches terminées</span></div>';
+ h+='<div class="stat"><b>'+seen+'/17</b><span>Situations rencontrées</span></div>';
+ h+='<div class="stat"><b>'+D.notes.length+'</b><span>Pages de notes</span></div>';
+ h+='</div>';
+
+ if(last){
+  h+='<div class="h2s">Reprendre</div>';
+  h+='<button class="fcard" style="max-width:460px" data-fiche="'+last.id+'"><span class="n">FICHE '+last.id+'</span><span class="t">'+esc(last.t)+'</span><span class="m">'+esc(last.s)+' · remplie à '+fichePct(last)+' %</span><span class="b pbar"><i style="width:'+fichePct(last)+'%"></i></span></button>';
+ }
+ h+='<div class="h2s">I · Fiches cliniques — onze situations de recueil et de surveillance</div><div class="fgrid">';
+ CF.forEach(f=>{
+  const p=fichePct(f),dn=D.done[f.id];
+  h+='<button class="fcard" data-fiche="'+f.id+'"><span class="badge'+(dn?' done':'')+'">'+(dn?'✓':'')+'</span><span class="n">FICHE '+f.id+'</span><span class="t">'+esc(f.t)+'</span><span class="m">'+esc(f.s)+' · '+p+' %</span><span class="b pbar"><i style="width:'+p+'%"></i></span></button>';
+ });
+ h+='</div>';
+
+ h+='<div class="h2s">II · Situations à risque</div><div class="fgrid">';
+ h+='<button class="fcard" data-go="tri"><span class="n">CARTE DE TRI</span><span class="t">Repérer, alerter, orienter</span><span class="m">Les signes qui ne rentrent pas dans le cadre habituel</span></button>';
+ h+='<button class="fcard" data-go="risques"><span class="n">R1 – R17</span><span class="t">17 situations à risque</span><span class="m">'+seen+' rencontrées sur 17</span><span class="b pbar"><i style="width:'+Math.round(seen/17*100)+'%"></i></span></button>';
+ h+='</div>';
+
+ h+='<div class="h2s">Comment utiliser ce carnet</div>';
+ h+='<div class="callout" style="margin-bottom:14px"><div>Ce carnet se remplit au fil du stage. Les fiches se lisent avant la garde ; elles se relisent après. Tout se sauvegarde automatiquement sur cet appareil.</div></div>';
+ h+='<ol class="steps">';
+ h+='<li><span><b>Avant la garde</b> — lire la fiche de la situation attendue : objectif, repères, séquence des gestes.</span></li>';
+ h+='<li><span><b>Pendant la garde</b> — remplir au fil de l’examen, noter les heures et les chiffres, jamais une impression.</span></li>';
+ h+='<li><span><b>Après la garde</b> — relire la fiche avec l’encadrant, écrire ce que l’on referait autrement, faire viser.</span></li>';
+ h+='<li><span><b>En fin de stage</b> — reprendre les fiches R1 à R17 et cocher celles qui ont été rencontrées en situation réelle.</span></li>';
+ h+='</ol>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));
+}
+
+/* ============================================================
+   RENDU — SITUATIONS À RISQUE
+   ============================================================ */
+function renderRisques(){
+ const seen=CR.filter(r=>(D.seen[r.id]||{}).seen).length;
+ let h='<div class="secband"><div class="rn">II</div><div><h1>Situations à risque</h1><p>Reconnaître · alerter · prendre en charge</p></div></div>';
+ h+='<p class="obj">Une situation à risque ne se reconnaît pas d’abord par son diagnostic, mais par un signe qui ne rentre pas dans le cadre habituel. Ces fiches disent quoi regarder, qui appeler, et en combien de temps.</p>';
+ h+='<div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 8px"><button class="btn pri" data-go="tri">Carte de tri — repérer, alerter, orienter</button><span class="pill" style="align-self:center">'+seen+' / 17 rencontrées</span></div>';
+ h+='<div class="fgrid">';
+ CR.forEach(r=>{
+  const s=D.seen[r.id]||{};
+  h+='<button class="fcard" data-risque="'+r.id+'"><span class="badge'+(s.seen?' done':'')+'">'+(s.seen?'✓':'')+'</span><span class="n">'+r.id+'</span><span class="t">'+esc(r.t)+'</span><span class="m">'+esc(r.cat)+(s.date?' · '+esc(s.date):'')+'</span></button>';
+ });
+ h+='</div>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));
+}
+
+function renderTri(){
+ let h='<div class="secband"><div class="rn">II</div><div><h1>Carte de tri</h1><p>Les gestes qui précèdent — repérer, alerter, orienter</p></div></div>';
+ h+='<p class="obj">Cette page se lit avant la garde : elle dit quoi regarder, qui appeler, et en combien de temps. Les circuits et les numéros se complètent avec l’encadrant, dans le service.</p>';
+ TRI.forEach(function(sec,i){
+  h+='<section class="sect"><h2><span class="num">'+String(i+1).padStart(2,'0')+'</span><span style="flex:1">'+esc(sec.l.replace(/^\d{2}\s*·\s*/,''))+'</span></h2>';
+  h+='<div class="tw"><table class="gt"><thead><tr>'+sec.head.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>';
+  sec.rows.forEach(r=>{h+='<tr>'+r.map((c,ci)=>'<td class="rl"'+(ci===0?' style="font-weight:600"':'')+'>'+esc(c)+'</td>').join('')+'</tr>'});
+  h+='</tbody></table></div></section>';
+ });
+ h+='<section class="sect"><h2><span class="num">04</span><span style="flex:1">Les cinq gestes qui ne changent pas</span></h2><ol class="steps">'+
+  GESTES.map(g=>'<li><span><b>'+esc(g[0])+'</b> — '+esc(g[1])+'</span></li>').join('')+'</ol></section>';
+ h+='<section class="sect"><h2><span class="num">05</span><span style="flex:1">Ce que je dis au téléphone</span></h2><div class="callout" style="font-style:italic">'+esc(PHONE)+'</div>'+
+  '<p class="hint" style="margin-top:8px">Identité professionnelle · situation en chiffres · ce qui a déjà été fait · ce qui est attendu.</p></section>';
+ h+='<section class="sect"><h2><span class="num">06</span><span style="flex:1">Les trois erreurs qui coûtent</span></h2><ul class="bul"><li>Faire un toucher vaginal devant un saignement du 3e trimestre avant l’échographie.</li><li>Rassurer sans avoir mesuré : « ça va passer » n’est pas une surveillance.</li><li>Attendre que quelqu’un d’autre constate, alors que l’on est la première à voir.</li></ul></section>';
+ h+='<section class="sect"><h2><span class="num">07</span><span style="flex:1">Numéros et circuits à connaître par cœur</span></h2><div class="fg">'+
+  [['salle','Salle de naissance'],['bloc','Bloc / anesthésie'],['sang','Banque de sang'],['neo','Néonatologie']].map(x=>'<div class="ff"><label>'+x[1]+'</label><input data-k="tri.'+x[0]+'" placeholder="Numéro, poste, localisation…"></div>').join('')+'</div></section>';
+ h+='<section class="sect"><h2><span class="num">08</span><span style="flex:1">Ma conduite dans ce service</span></h2><textarea class="ta" data-k="tri.conduite" rows="4" placeholder="Ce que l’encadrant m’a dit de faire, dans l’ordre, avec qui…"></textarea></section>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));
+}
+
+/* ============================================================
+   RENDU — ANNEXES
+   ============================================================ */
+const BISHOP={k:'score',id:'bishop',h:'01 · Score de Bishop — maturation cervicale',cols:[{l:'Score'}],
+ items:[
+  {l:'Dilatation',o:['Fermé','1-2 cm','3-4 cm','5 cm']},
+  {l:'Effacement',o:['0-30 %','40-50 %','60-70 %','80 %']},
+  {l:'Consistance',o:['Ferme','Intermédiaire','Molle']},
+  {l:'Position du col',o:['Postérieur','Intermédiaire','Antérieur']},
+  {l:'Hauteur de la présentation',o:['-3','-2','-1 / 0','+1 / +2']}],
+ note:'Total sur 13. Un score élevé correspond à un col favorable ; le seuil retenu pour un déclenchement varie selon les équipes.'};
+function refTable(head,rows){
+ return '<div class="tw"><table class="gt"><thead><tr>'+head.map(h=>'<th>'+esc(h)+'</th>').join('')+'</tr></thead><tbody>'+
+  rows.map(r=>'<tr>'+r.map((c,i)=>'<td class="rl"'+(i===0?' style="font-weight:600;background:var(--surface)"':'')+'>'+esc(c)+'</td>').join('')+'</tr>').join('')+
+  '</tbody></table></div>';
+}
+function renderAnnexes(){
+ let h='<div class="secband"><div class="rn">III</div><div><h1>Annexes</h1><p>Scores, valeurs, vocabulaire</p></div></div>';
+ h+='<p class="obj">Aide-mémoire. Les seuils et les conduites à tenir sont ceux des référentiels en vigueur dans le service : ces pages servent à se souvenir d’un outil, pas à remplacer le protocole.</p>';
+ h+=blockHTML('anx',BISHOP,0);
+
+ h+='<section class="sect"><h2><span class="num">02</span><span style="flex:1">Index de choc (HPP)</span></h2>';
+ h+='<p class="hint">Index de choc = fréquence cardiaque / pression artérielle systolique. Un index ≥ 1 doit faire craindre une perte sanguine significative, même si la TA paraît encore correcte.</p>';
+ h+='<div class="fg"><div class="ff"><label>Fréquence cardiaque / min</label><input id="si-fc" data-calc="si" inputmode="numeric" placeholder="110"></div>';
+ h+='<div class="ff"><label>PAS (mmHg)</label><input id="si-pas" data-calc="si" inputmode="numeric" placeholder="100"></div>';
+ h+='<div class="ff" style="grid-column:span 2"><label>Index de choc</label><div style="display:flex;align-items:baseline;gap:12px;padding:2px 0;flex-wrap:wrap"><b id="si-out" style="font-family:var(--disp);font-size:28px;color:var(--accent);line-height:1.1">—</b><span id="si-txt" style="font-size:12.5px;color:var(--muted);flex:1;min-width:180px">Renseigner les deux valeurs.</span></div></div></div>';
+ h+='</section>';
+
+ h+='<section class="sect"><h2><span class="num">03</span><span style="flex:1">Lecture du rythme cardiaque fœtal</span></h2>'+
+  refTable(['Élément','Rythme rassurant','Ce qui inquiète'],[
+   ['Fréquence de base','Entre 110 et 160 / min','Tachycardie ou bradycardie persistante'],
+   ['Variabilité','Oscillations présentes, 5-25 / min','Rythme plat ou variabilité majorée'],
+   ['Accélérations','Présentes, en réponse aux mouvements','Absence prolongée'],
+   ['Ralentissements','Précoces, isolés, non répétés','Tardifs, variables, répétés'],
+   ['Activité utérine','Contractions espacées, tonus normal','Hypercinésie, hypertonie']])+'</section>';
+
+ h+='<section class="sect"><h2><span class="num">04</span><span style="flex:1">Échelle de douleur — EVA</span></h2>';
+ h+='<div class="rcell" style="display:grid;gap:8px"><input type="range" id="eva" min="0" max="10" step="1" value="0" style="width:100%;accent-color:var(--accent);margin:2px 0">';
+ h+='<div style="display:flex;justify-content:space-between;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700"><span>0 Absente</span><span>10 Insupportable</span></div>';
+ h+='<div id="eva-out" style="font-family:var(--disp);font-size:17px;color:var(--deep)">0 — Absente</div></div></section>';
+
+ h+='<section class="sect"><h2><span class="num">05</span><span style="flex:1">Valeurs de référence</span></h2>';
+ h+='<div class="ftitle" style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:4px 0 6px">Chez la mère</div>'+refTable(['Paramètre','Valeur usuelle'],VALEURS_M);
+ h+='<div class="ftitle" style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:16px 0 6px">Chez le nouveau-né à terme</div>'+refTable(['Paramètre','Valeur usuelle'],VALEURS_N);
+ h+='<p class="hint" style="margin-top:10px">Perte de poids physiologique : jusqu’à environ 10 % du poids de naissance les premiers jours, reprise attendue en une à deux semaines. Une protéinurie ≥ 300 mg/24 h est pathologique.</p></section>';
+
+ h+='<section class="sect"><h2><span class="num">06</span><span style="flex:1">Quand appeler sans attendre</span></h2>';
+ h+='<div class="callout warn"><span class="l">Pendant la grossesse</span><div>Saignements · perte de liquide · fièvre · céphalées intenses, troubles visuels, douleur épigastrique · diminution des mouvements fœtaux · contractions avant terme.</div></div>';
+ h+='<div class="callout" style="margin-top:10px"><span class="l">Après l’accouchement</span><div>Saignement abondant ou caillots · fièvre · douleur ou rougeur du sein · lochies fétides · douleur pelvienne · tristesse ou anxiété persistantes · refus de boire du nouveau-né, ictère intense, fièvre.</div></div>';
+ h+='<div class="callout" style="margin-top:10px"><span class="l">Repères biologiques de la pré-éclampsie sévère</span><div>Plaquettes &lt; 100 000/mm³ · ASAT-ALAT ≥ 2N · LDH &gt; 600 UI/L · créatinine ≥ 90 µmol/L · protéinurie &gt; 3 g/24 h · oligurie ≤ 500 mL/24 h.</div></div></section>';
+
+ h+='<section class="sect"><h2><span class="num">07</span><span style="flex:1">Calendrier du suivi prénatal</span></h2>'+refTable(['Moment','Ce qui est fait'],CAL)+
+  '<p class="hint" style="margin-top:10px">Calendrier national : à confronter au protocole du service.</p></section>';
+
+ h+='<section class="sect"><h2><span class="num">08</span><span style="flex:1">Abréviations et vocabulaire</span></h2>';
+ h+='<input class="ta" id="abf" placeholder="Filtrer une abréviation…" style="height:38px;min-height:38px;padding:0 12px;background-image:none;margin-bottom:10px">';
+ h+='<div id="abrs" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:5px 18px">';
+ ABR.forEach(a=>{h+='<div class="abr-l" data-s="'+esc((a[0]+' '+a[1]).toLowerCase())+'" style="font-size:13px;line-height:1.45;padding:2px 0"><b style="font-family:var(--disp);color:var(--deep);font-size:12.5px">'+esc(a[0])+'</b><span style="color:var(--text)"> · '+esc(a[1])+'</span></div>'});
+ h+='</div><p class="hint" style="margin-top:10px">Compléter la liste au fil du stage.</p>';
+ h+='<textarea class="ta" data-k="anx.vocab" rows="2" placeholder="Autres termes entendus dans le service, et leur sens…"></textarea></section>';
+
+ h+='<section class="sect"><h2><span class="num">09</span><span style="flex:1">Notes personnelles</span></h2><textarea class="ta" data-k="anx.notes" rows="3" placeholder="Seuils utilisés dans mon service, remarques…"></textarea></section>';
+ h+='<p style="margin:22px 0 0;font-size:11px;color:var(--muted)">Référence : Protocoles et procédures de prise en charge de la grossesse, de l’accouchement et de la période post-natale — Ministère de la Santé, DGSRH, éd. 2025.</p>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));scoreTotals();calcSI();evaOut();
+}
+
+/* ============================================================
+   RENDU — MÉMO CLINIQUE
+   ============================================================ */
+function renderMemo(){
+ let h='<div class="secband"><div class="rn">V</div><div><h1>Mémo clinique</h1><p>Calculs, bilans, médicaments, transmissions</p></div></div>';
+ h+='<p class="obj">Les calculs que l’on refait dix fois par garde. À vérifier avec la datation retenue dans le dossier : la DDR n’est fiable que si les cycles sont réguliers, l’échographie du premier trimestre fait foi.</p>';
+
+ h+='<section class="sect"><h2><span class="num">01</span><span style="flex:1">Terme, date prévue et âge gestationnel</span></h2>';
+ h+='<div class="fg"><div class="ff"><label>Date des dernières règles (DDR)</label><input type="date" id="m-ddr" data-k="m.ddr" data-calc="term"></div>';
+ h+='<div class="ff"><label>Date de l’échographie de datation</label><input type="date" id="m-edate" data-k="m.edate" data-calc="term"></div>';
+ h+='<div class="ff"><label>Terme à l’échographie (SA)</label><input id="m-esa" data-k="m.esa" data-calc="term" inputmode="numeric" placeholder="12"></div>';
+ h+='<div class="ff"><label>… + jours</label><input id="m-ej" data-k="m.ej" data-calc="term" inputmode="numeric" placeholder="2"></div></div>';
+ h+='<div class="stats" style="grid-template-columns:repeat(3,minmax(0,1fr));margin:14px 0 0">';
+ h+='<div class="stat"><b id="m-sa" style="font-size:22px">—</b><span>Terme aujourd’hui</span></div>';
+ h+='<div class="stat"><b id="m-dpa" style="font-size:22px">—</b><span>DPA (DDR + 287 j)</span></div>';
+ h+='<div class="stat"><b id="m-dpa2" style="font-size:22px">—</b><span>DPA (échographie)</span></div></div>';
+ h+='<p class="hint" style="margin-top:8px">Règle de Naegele : DDR + 14 jours + 9 mois. Âge gestationnel : (date du jour − DDR) ÷ 7, en semaines révolues ; un terme s’écrit toujours « SA + jours ».</p>';
+ h+='<div class="callout" style="margin-top:10px"><span class="l">Repères</span><div>Prématurité &lt; 37 SA · à terme 37 à 41 SA + 6 · post-terme ≥ 42 SA.</div></div></section>';
+
+ h+='<section class="sect"><h2><span class="num">02</span><span style="flex:1">IMC et prise de poids</span></h2>';
+ h+='<div class="fg"><div class="ff"><label>Poids avant la grossesse (kg)</label><input id="m-poids" data-k="m.poids" data-calc="bmi" inputmode="decimal" placeholder="62"></div>';
+ h+='<div class="ff"><label>Taille (cm)</label><input id="m-taille" data-k="m.taille" data-calc="bmi" inputmode="numeric" placeholder="165"></div>';
+ h+='<div class="ff" style="grid-column:span 2"><label>IMC · prise de poids conseillée</label><div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding:2px 0"><b id="m-imc" style="font-family:var(--disp);font-size:28px;color:var(--accent);line-height:1.1">—</b><span id="m-gain" style="font-size:13px;color:var(--muted)">Renseigner le poids et la taille.</span></div></div></div>';
+ h+='<div style="margin-top:14px">'+refTable(['IMC avant la grossesse','Prise de poids conseillée'],[['< 18,5 (insuffisance pondérale)','12,5 à 18 kg'],['18,5 – 24,9 (poids normal)','11,5 à 16 kg'],['25 – 29,9 (surpoids)','7 à 11,5 kg'],['≥ 30 (obésité)','5 à 9 kg']])+'</div>';
+ h+='<p class="hint" style="margin-top:8px">Hauteur utérine : de 20 à 32 SA, elle suit approximativement le terme (HU en cm ≈ SA, ± 2 cm). Une HU en retard de plus de 2 cm se vérifie à l’échographie.</p></section>';
+
+ h+='<section class="sect"><h2><span class="num">03</span><span style="flex:1">Repères de surveillance</span></h2>'+refTable(['Paramètre','Valeur usuelle'],[
+  ['Tension artérielle','< 140 / 90 mmHg'],['Rythme cardiaque fœtal','110 à 160 / min'],['Contractions en travail actif','3 à 5 par 10 min, douloureuses'],
+  ['Dilatation en phase active','≈ 1 cm/heure chez la primipare'],['Hémoglobine','11 à 15 g/dL'],['Perte sanguine voie basse','≈ 500 mL'],
+  ['Index de choc','FC ÷ PAS ; ≥ 1 = alerte'],['Diurèse','≥ 0,5 mL/kg/h']])+'</section>';
+
+ h+='<section class="sect"><h2><span class="num">04</span><span style="flex:1">Bilan prénatal par trimestre</span></h2>';
+ BILANS.forEach(b=>{h+='<div style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:14px 0 6px">'+esc(b.l)+'</div>'+refTable(['Ce qui est fait','Détail et but'],b.rows)});
+ h+='<p class="hint" style="margin-top:10px">Calendrier national : à confronter au protocole du service.</p></section>';
+
+ h+='<section class="sect"><h2><span class="num">05</span><span style="flex:1">Médicaments essentiels de la salle de naissance</span></h2>';
+ h+='<div class="tw"><table class="gt"><thead><tr><th>Médicament</th><th>Situation</th><th>Repère de dose</th><th>Surveillance / précaution</th></tr></thead><tbody>';
+ MEDS.forEach(m=>{h+='<tr>'+m.map((c,i)=>'<td class="rl"'+(i===0?' style="font-weight:600"':'')+'>'+esc(c)+'</td>').join('')+'</tr>'});
+ h+='</tbody></table></div><p class="hint" style="margin-top:8px">Ce n’est pas une ordonnance : la dose se vérifie sur la prescription et le protocole affiché, à chaque fois.</p>';
+ h+='<div class="callout" style="margin-top:12px"><span class="l">Avant d’administrer, je vérifie</span><div>Les cinq bons — bonne patiente, bon médicament, bonne dose, bonne voie, bon moment · l’allergie notée et le poids pour les doses au kg · la compatibilité avec la perfusion en cours · ce que je vais surveiller après, avec le seuil d’alerte · ce que j’annonce à la patiente · ce que je trace immédiatement : heure, dose, voie, effet.</div></div></section>';
+
+ h+='<section class="sect"><h2><span class="num">06</span><span style="flex:1">Les quatre phrases à répéter à chaque consultation</span></h2>';
+ h+='<div class="callout" style="display:grid;gap:8px"><div>« Revenez si vous saignez, si vous perdez du liquide ou si vous avez de la fièvre. »</div><div>« Comptez les mouvements de votre bébé chaque jour ; s’il bouge moins, appelez. »</div><div>« Un mal de tête qui ne passe pas, des moucherons devant les yeux ou une douleur en barre : c’est une urgence. »</div><div>« Vous pouvez appeler la maternité à toute heure ; personne ne vous reprochera d’avoir appelé. »</div></div></section>';
+
+ h+='<section class="sect"><h2><span class="num">07</span><span style="flex:1">Mes calculs et remarques</span></h2><textarea class="ta" data-k="m.notes" rows="4" placeholder="Ce que j’ai recalculé, ce que l’équipe utilise comme repère…"></textarea></section>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));calcTerm();calcBMI();
+}
+
+/* ============================================================
+   RENDU — NOTES LIBRES
+   ============================================================ */
+function renderNotes(){
+ let h='<div class="secband"><div class="rn">IV</div><div><h1>Notes libres</h1><p>Pages de travail</p></div></div>';
+ h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px;flex-wrap:wrap"><p class="obj" style="margin:0;flex:1;min-width:220px">Schémas, questions, citations à retenir, idées de mémoire : ce qui ne rentre dans aucune case.</p><button class="btn pri" data-addnote="1">+ Nouvelle page</button></div>';
+ h+='<div class="notes">';
+ D.notes.forEach(n=>{
+  h+='<div class="note"><div class="nh"><input data-k="nt.'+n.id+'.t" placeholder="Titre de la page" autocomplete="off"><span class="meta">'+fmtD(parseD(n.d))+'</span><button class="btn sm gh" data-delnote="'+n.id+'" title="Supprimer cette page">×</button></div>';
+  h+='<textarea class="ta" data-k="nt.'+n.id+'.b" rows="5" placeholder="Écrire…"></textarea></div>';
+ });
+ h+='</div><p class="hint" style="margin-top:14px">Une page qui se relit dans six mois doit encore avoir du sens.</p>';
+ $('#view').innerHTML=h;
+ hydrate($('#view'));
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+let route={v:'home',id:null};
+function go(v,id){route={v:v,id:id||null};render();window.scrollTo(0,0);$('#side').classList.remove('open')}
+function render(){
+ const v=route.v;
+ if(v==='fiche'){const f=CF.find(x=>x.id===route.id);if(!f){route={v:'home',id:null};return render()}if(D.ui.last!==f.id){D.ui.last=f.id;quietSave()}renderFiche(f)}
+ else if(v==='risque'){const r=CR.find(x=>x.id===route.id);if(!r){route={v:'risques',id:null};return render()}renderRisque(r)}
+ else if(v==='risques')renderRisques();
+ else if(v==='tri')renderTri();
+ else if(v==='annexes')renderAnnexes();
+ else if(v==='notes')renderNotes();
+ else if(v==='memo')renderMemo();
+ else renderHome();
+ nav();crumb();updateGlobal();printName();
+}
+function nav(){
+ $$('.nv').forEach(b=>{
+  const v=b.getAttribute('data-go');let on=false;
+  if(v==='risques')on=(route.v==='risques'||route.v==='tri'||route.v==='risque');
+  else if(v==='home')on=(route.v==='home');
+  else on=(v===route.v);
+  b.classList.toggle('on',on);
+ });
+ $$('#flist .fv').forEach(b=>{
+  const id=b.getAttribute('data-fiche'),f=CF.find(x=>x.id===id);if(!f)return;
+  b.classList.toggle('on',route.v==='fiche'&&route.id===id);
+  const dot=b.querySelector('.dot');if(!dot)return;
+  dot.className='dot'+(D.done[id]?' f':(fichePct(f)>0?' p':''));
+ });
+}
+function crumb(){
+ const names={home:'Couverture & sommaire',risques:'Situations à risque',tri:'Carte de tri',annexes:'Annexes',notes:'Notes libres',memo:'Mémo clinique'};
+ let out='<button class="cr2" data-go="home" title="Revenir à la couverture">Carnet de stage</button>';
+ if(route.v==='fiche'){
+  const f=CF.find(x=>x.id===route.id);
+  out+='<span class="sep">/</span><span>Fiche '+esc(route.id)+'</span><span class="sep">/</span><b>'+esc(f?f.t:'')+'</b>';
+ }else if(route.v==='risque'){
+  const r=CR.find(x=>x.id===route.id);
+  out+='<span class="sep">/</span><span>Situations à risque</span><span class="sep">/</span><b>'+esc(r?r.t:'')+'</b>';
+ }else out+='<span class="sep">/</span><b>'+names[route.v]+'</b>';
+ $('#crumb').innerHTML=out;
+}
+function printName(){const el=$('#pfname');if(!el)return;const n=((D.data['p.nom']||'')+' '+(D.data['p.prenom']||'')).trim();el.textContent=n||'Nom, prénom'}
+function updateGlobal(){
+ let tot=0,fill=0;
+ CF.forEach(f=>{const s=defKeys(f);tot+=s.tot;fill+=s.fill});
+ const p=tot?Math.round(fill/tot*100):0;
+ $('#glob').textContent=p+' %';$('#globbar').style.width=p+'%';
+ const seen=CR.filter(r=>(D.seen[r.id]||{}).seen).length;
+ $('#cntR').textContent=seen+'/'+CR.length;
+}
+function ficheProgress(){
+ const f=CF.find(x=>x.id===route.id);if(!f)return;
+ const p=fichePct(f);
+ if($('#fpct'))$('#fpct').textContent=p+' %';
+ if($('#fbar'))$('#fbar').style.width=p+'%';
+ updateGlobal();nav();
+}
+
+/* ============================================================
+   CALCULS
+   ============================================================ */
+function calcSI(){
+ const a=$('#si-fc'),b=$('#si-pas'),o=$('#si-out'),t=$('#si-txt');
+ if(!a||!b||!o)return;
+ const fc=parseFloat(a.value),pas=parseFloat(b.value);
+ if(!fc||!pas){o.textContent='—';t.textContent='Renseigner les deux valeurs.';return}
+ const i=fc/pas;
+ o.textContent=i.toFixed(2).replace('.',',');
+ t.textContent=i>=1?'Index ≥ 1 : craindre une perte sanguine significative, même si la TA paraît encore correcte.':'Index < 1 : repère rassurant, à interpréter avec la clinique.';
+ o.style.color=i>=1?'var(--warn)':'var(--accent)';
+}
+function evaOut(){
+ const el=$('#eva'),o=$('#eva-out');if(!el||!o)return;
+ const v=+el.value;
+ const lab=v===0?'Absente':v<=3?'Faible':v<=6?'Modérée':v<=9?'Forte':'Insupportable';
+ o.textContent=v+' — '+lab;
+}
+function calcTerm(){
+ const ddr=parseD(($('#m-ddr')||{}).value);
+ const sa=$('#m-sa'),dpa=$('#m-dpa');
+ if(ddr){
+  const dd=diffD(ddr,todayUTC());
+  if(sa)sa.textContent=dd<0?'—':(Math.floor(dd/7)+' SA + '+(dd%7)+' j');
+  if(dpa)dpa.textContent=fmtD(addD(ddr,287));
+ }else{if(sa)sa.textContent='—';if(dpa)dpa.textContent='—'}
+ const ed=parseD(($('#m-edate')||{}).value),w=parseInt(($('#m-esa')||{}).value||'0',10),j=parseInt(($('#m-ej')||{}).value||'0',10);
+ const d2=$('#m-dpa2');
+ if(d2)d2.textContent=(ed&&w>0)?fmtD(addD(ed,280-(w*7+(j||0)))):'—';
+}
+function calcBMI(){
+ const p=parseFloat(($('#m-poids')||{}).value),t=parseFloat(($('#m-taille')||{}).value);
+ const o=$('#m-imc'),g=$('#m-gain');if(!o||!g)return;
+ if(!(p>0)||!(t>50)){o.textContent='—';g.textContent='Renseigner le poids et la taille.';return}
+ const v=p/Math.pow(t/100,2);
+ o.textContent=v.toFixed(1).replace('.',',');
+ let gain='12,5 à 18 kg',cat='Insuffisance pondérale';
+ if(v>=30){gain='5 à 9 kg';cat='Obésité'}
+ else if(v>=25){gain='7 à 11,5 kg';cat='Surpoids'}
+ else if(v>=18.5){gain='11,5 à 16 kg';cat='Poids normal'}
+ g.textContent=cat+' — prise de poids conseillée sur la grossesse : '+gain+'.';
+}
+function abFilter(q){
+ const s=q.trim().toLowerCase();
+ $$('#abrs .abr-l').forEach(el=>{el.style.display=(!s||el.getAttribute('data-s').indexOf(s)>=0)?'':'none'});
+}
+
+/* ============================================================
+   RECHERCHE
+   ============================================================ */
+const IDX=()=>[].concat(
+ CF.map(f=>({no:f.id,t:f.t,ty:'Fiche',go:function(){go('fiche',f.id)}})),
+ CR.map(r=>({no:r.id,t:r.t,ty:'Risque',go:function(){go('risque',r.id)}})),
+ [{no:'II',t:'Carte de tri — repérer, alerter, orienter',ty:'Outil',go:function(){go('tri')}},
+  {no:'II',t:'Les cinq gestes qui précèdent',ty:'Outil',go:function(){go('tri')}},
+  {no:'III',t:'Score de Bishop',ty:'Outil',go:function(){go('annexes')}},
+  {no:'III',t:'Index de choc',ty:'Outil',go:function(){go('annexes')}},
+  {no:'III',t:'Valeurs de référence',ty:'Outil',go:function(){go('annexes')}},
+  {no:'III',t:'Abréviations et vocabulaire',ty:'Outil',go:function(){go('annexes')}},
+  {no:'IV',t:'Notes libres',ty:'Outil',go:function(){go('notes')}},
+  {no:'V',t:'Calcul du terme et de la DPA',ty:'Outil',go:function(){go('memo')}},
+  {no:'V',t:'Médicaments de la salle de naissance',ty:'Outil',go:function(){go('memo')}}]
+);
+let kbRes=[];
+function openKb(){$('#kb').classList.add('on');$('#kq').value='';kbFilter('');setTimeout(()=>$('#kq').focus(),40)}
+function closeKb(){$('#kb').classList.remove('on')}
+function kbFilter(q){
+ const s=q.trim().toLowerCase();
+ kbRes=IDX().filter(x=>!s||(x.t+' '+x.no+' '+x.ty).toLowerCase().indexOf(s)>=0).slice(0,14);
+ $('#kbl').innerHTML=kbRes.length?kbRes.map((x,i)=>'<button class="kbi'+(i===0?' sel':'')+'" data-i="'+i+'"><span class="no">'+esc(x.no)+'</span><span>'+esc(x.t)+'</span><span class="ty">'+esc(x.ty)+'</span></button>').join(''):'<div class="empty" style="padding:18px 14px">Aucun résultat</div>';
+}
+
+/* ============================================================
+   ÉVÉNEMENTS
+   ============================================================ */
+function onEdit(e){
+ const el=e.target;
+ if(el.id==='abf'){abFilter(el.value);return}
+ const k=el.getAttribute&&el.getAttribute('data-k');
+ if(k){
+  D.data[k]=el.type==='checkbox'?!!el.checked:el.value;
+  save();
+  if(el.closest('.sc'))scoreTotals();
+  if(k.indexOf('p.')===0)printName();
+  if(route.v==='fiche')ficheProgress(); else updateGlobal();
+ }
+ if(el.id==='eva')evaOut();
+ const c=el.getAttribute&&el.getAttribute('data-calc');
+ if(c==='si')calcSI();else if(c==='term')calcTerm();else if(c==='bmi')calcBMI();
+}
+document.addEventListener('input',onEdit);
+document.addEventListener('change',onEdit);
+document.addEventListener('click',e=>{
+ const ki=e.target.closest('.kbi');
+ if(ki){const x=kbRes[+ki.getAttribute('data-i')];if(x){closeKb();x.go()}return}
+ const g=e.target.closest('[data-go]');
+ if(g){go(g.getAttribute('data-go'));return}
+ const f=e.target.closest('[data-fiche]');
+ if(f){go('fiche',f.getAttribute('data-fiche'));return}
+ const r=e.target.closest('[data-risque]');
+ if(r){go('risque',r.getAttribute('data-risque'));return}
+ const d=e.target.closest('[data-done]');
+ if(d){
+  const id=d.getAttribute('data-done');
+  D.done[id]=!D.done[id];persist();
+  d.classList.toggle('on',!!D.done[id]);
+  nav();updateGlobal();
+  if(route.v==='home')renderHome();
+  toast(D.done[id]?'Fiche marquée comme terminée':'Fiche rouverte');
+  return;
+ }
+ const del=e.target.closest('[data-delnote]');
+ if(del){
+  if(confirm('Supprimer cette page de notes ?')){
+   D.notes=D.notes.filter(x=>x.id!==del.getAttribute('data-delnote'));persist();renderNotes();toast('Page supprimée');
+  }
+  return;
+ }
+ const add=e.target.closest('[data-addnote]');
+ if(add){
+  D.notes.push({id:'n'+Date.now(),t:'',b:'',d:todayISO()});persist();renderNotes();
+  const ins=$$('.note input');if(ins.length)ins[ins.length-1].focus();
+  return;
+ }
+});
+
+/* ============================================================
+   THÈME · SAUVEGARDE
+   ============================================================ */
+const prefersDark=function(){try{return window.matchMedia('(prefers-color-scheme: dark)').matches}catch(e){return false}};
+function applyTheme(){
+ const t=D.ui.theme;
+ if(t)document.documentElement.setAttribute('data-theme',t);else document.documentElement.removeAttribute('data-theme');
+ const dark=t?t==='dark':prefersDark();
+ const b=$('#theme');if(b)b.textContent=dark?'Clair':'Sombre';
+}
+function exportJSON(){
+ const blob=new Blob([JSON.stringify(D,null,2)],{type:'application/json'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='carnet-sage-femme-'+todayISO()+'.json';
+ document.body.appendChild(a);a.click();a.remove();
+ toast('Sauvegarde téléchargée');
+}
+function importJSON(e){
+ const f=e.target.files&&e.target.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=function(){
+  try{
+   const o=JSON.parse(rd.result);
+   if(!confirm('Remplacer les données de ce carnet par cette sauvegarde ?')){e.target.value='';return}
+   D=Object.assign({profil:{},data:{},done:{},seen:{},notes:[],ui:{}},o);
+   persist();applyTheme();render();toast('Sauvegarde restaurée');
+  }catch(err){toast('Fichier illisible')}
+ };
+ rd.readAsText(f);e.target.value='';
+}
+
+/* ============================================================
+   DÉMARRAGE
+   ============================================================ */
+function init(){
+ load();
+ try{
+  if(window.self!==window.top){
+   document.body.classList.add('embed');
+   try{const pt=window.parent.document.documentElement.getAttribute('data-theme');if(pt&&!D.ui.theme)D.ui.theme=pt}catch(e){}
+  }
+ }catch(e){document.body.classList.add('embed')}
+ applyTheme();
+ $('#flist').innerHTML=CF.map(f=>'<button class="fv" data-fiche="'+f.id+'"><span class="no">'+f.id+'</span><span class="tx">'+esc(f.t)+'</span><span class="dot"></span></button>').join('');
+ const hh=(location.hash||'').replace('#','');
+ if(hh.indexOf('f/')===0)route={v:'fiche',id:hh.slice(2)};
+ else if(hh.indexOf('r/')===0)route={v:'risque',id:hh.slice(2)};
+ else if(['risques','tri','annexes','notes','memo'].indexOf(hh)>=0)route={v:hh,id:null};
+ render();
+ $('#theme').onclick=function(){
+  const dark=D.ui.theme?D.ui.theme==='dark':prefersDark();
+  D.ui.theme=dark?'light':'dark';persist();applyTheme();toast(dark?'Thème clair':'Thème sombre');
+ };
+ $('#exp').onclick=exportJSON;
+ $('#imp').onclick=function(){$('#fileIn').click()};
+ $('#fileIn').onchange=importJSON;
+ $('#pr').onclick=function(){window.print()};
+ $('#menu').onclick=function(){$('#side').classList.toggle('open')};
+ $('#q').addEventListener('focus',function(){this.blur();openKb()});
+ $('#kq').addEventListener('input',function(){kbFilter(this.value)});
+ $('#kq').addEventListener('keydown',function(ev){
+  if(ev.key==='Enter'){ev.preventDefault();if(kbRes[0]){const x=kbRes[0];closeKb();x.go()}}
+ });
+ $('#kb').addEventListener('click',function(ev){if(ev.target.id==='kb')closeKb()});
+ document.addEventListener('keydown',function(ev){
+  if((ev.metaKey||ev.ctrlKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();openKb()}
+  else if(ev.key==='Escape')closeKb();
+ });
+ window.addEventListener('beforeunload',persist);
+}
+init();
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
+}
+</script>
+</body>
+</html>
